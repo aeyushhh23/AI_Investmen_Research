@@ -1,121 +1,117 @@
+import { motion } from "framer-motion";
 import {
-    TrendingUp,
-    Moon,
-    Sun
+  Search,
+  Bell,
+  Moon,
+  Sun,
+  Sparkles,
+  ChevronDown,
 } from "lucide-react";
+import { useEffect, useState } from "react";
 
-import { useTheme } from "../../context/ThemeContext";
-const Navbar=()=>{
+const Navbar = () => {
+  const [dark, setDark] = useState(true);
 
-    return(
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", dark);
+  }, [dark]);
 
-        <header
-        className="
-        sticky
-        top-0
-        z-50
-        backdrop-blur-xl
-        bg-slate-950/70
-        border-b
-        border-slate-800
-        ">
+  return (
+    <motion.nav
+      initial={{ opacity: 0, y: -25 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.45 }}
+      className="sticky top-4 z-50 mx-auto mt-5 flex w-[96%] items-center justify-between rounded-3xl border border-white/10 bg-white/5 px-7 py-4 backdrop-blur-2xl"
+    >
+      {/* LEFT */}
 
-            <div
-            className="
-            max-w-screen-2xl
-            mx-auto
-            px-6
-            md:px-10
-            h-20
-            flex
-            items-center
-            justify-between
-            ">
+      <div className="flex items-center gap-4">
+        <motion.div
+          whileHover={{
+            rotate: 15,
+            scale: 1.08,
+          }}
+          className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 via-cyan-500 to-indigo-500 shadow-lg shadow-blue-500/30"
+        >
+          <Sparkles className="text-white" size={22} />
+        </motion.div>
 
-                <div className="flex items-center gap-4">
+        <div>
+          <h2 className="gradient-text text-xl font-extrabold">
+            AI Investment
+          </h2>
 
-                    <div
-                    className="
-                    w-14
-                    h-14
-                    rounded-2xl
-                    bg-gradient-to-r
-                    from-blue-600
-                    to-cyan-500
-                    flex
-                    items-center
-                    justify-center
-                    shadow-xl
-                    ">
+          <p className="text-xs text-slate-400">
+            Research Terminal
+          </p>
+        </div>
+      </div>
 
-                        <TrendingUp
-                        size={30}
-                        className="text-white"
-                        />
+      {/* CENTER */}
 
-                    </div>
+      <div className="hidden lg:flex w-[42%]">
+        <div className="flex w-full items-center rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3 transition duration-300 focus-within:border-blue-500/50 focus-within:shadow-lg focus-within:shadow-blue-500/10">
+          <Search
+            size={18}
+            className="mr-3 text-slate-500"
+          />
 
-                    <div>
+          <input
+            placeholder="Search Apple, Tesla, Nvidia..."
+            className="w-full bg-transparent text-sm outline-none placeholder:text-slate-500"
+          />
+        </div>
+      </div>
 
-                        <h1
-                        className="
-                        text-3xl
-                        font-black
-                        bg-gradient-to-r
-                        from-blue-400
-                        to-cyan-400
-                        bg-clip-text
-                        text-transparent
-                        ">
+      {/* RIGHT */}
 
-                            AI Investment Research
+      <div className="flex items-center gap-3">
+        <motion.button
+          whileTap={{ scale: .92 }}
+          whileHover={{ scale: 1.05 }}
+          className="rounded-2xl border border-white/10 bg-white/5 p-3 transition hover:bg-white/10"
+        >
+          <Bell size={18} />
+        </motion.button>
 
-                        </h1>
+        <motion.button
+          whileTap={{ scale: .92 }}
+          whileHover={{ scale: 1.05 }}
+          onClick={() => setDark(!dark)}
+          className="rounded-2xl border border-white/10 bg-white/5 p-3 transition hover:bg-white/10"
+        >
+          {dark ? (
+            <Sun size={18} />
+          ) : (
+            <Moon size={18} />
+          )}
+        </motion.button>
 
-                        <p className="text-slate-400 text-sm">
+        <motion.div
+          whileHover={{ scale: 1.02 }}
+          className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-2"
+        >
+          <img
+            src="https://ui-avatars.com/api/?background=2563eb&color=fff&name=Ayush"
+            alt="avatar"
+            className="h-10 w-10 rounded-full"
+          />
 
-                            Gemini AI • Finnhub
+          <div className="hidden md:block">
+            <h3 className="text-sm font-semibold">
+              Ayush
+            </h3>
 
-                        </p>
+            <p className="text-xs text-slate-400">
+              Premium User
+            </p>
+          </div>
 
-                    </div>
-
-                </div>
-
-                <div
-                className="
-                hidden
-                lg:flex
-                gap-8
-                text-slate-400
-                ">
-
-                    <button className="hover:text-blue-400 transition">
-
-                        Dashboard
-
-                    </button>
-
-                    <button className="hover:text-blue-400 transition">
-
-                        Market
-
-                    </button>
-
-                    <button className="hover:text-blue-400 transition">
-
-                        Portfolio
-
-                    </button>
-
-                </div>
-
-            </div>
-
-        </header>
-
-    );
-
+          <ChevronDown size={18} />
+        </motion.div>
+      </div>
+    </motion.nav>
+  );
 };
 
 export default Navbar;

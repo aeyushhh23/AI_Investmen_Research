@@ -1,146 +1,132 @@
+import { motion } from "framer-motion";
 import {
-    Brain,
-    TrendingUp,
-    ShieldCheck,
-    CircleDollarSign
+  Brain,
+  Target,
+  ShieldAlert,
+  Sparkles,
 } from "lucide-react";
 
-const AIReportCard = ({ report }) => {
+const Section = ({ icon, title, children }) => (
+  <div
+    className="
+    rounded-2xl
+    border
+    border-white/10
+    bg-white/5
+    p-6
+    "
+  >
+    <div className="flex items-center gap-3 mb-4">
 
-    if (!report) return null;
+      <div className="rounded-xl bg-blue-500/10 p-2">
 
-    return (
+        {icon}
 
-        <div className="
-            rounded-3xl
-            bg-gradient-to-br
-            from-slate-900
-            to-slate-800
-            border
-            border-slate-700
-            p-8
-            shadow-xl
-            hover:border-blue-500
-            transition-all
-        ">
+      </div>
 
-            <div className="flex items-center gap-4 mb-8">
+      <h3 className="text-xl font-bold">
 
-                <div className="
-                    w-16
-                    h-16
-                    rounded-2xl
-                    bg-gradient-to-r
-                    from-blue-600
-                    to-cyan-500
-                    flex
-                    items-center
-                    justify-center
-                ">
+        {title}
 
-                    <Brain className="text-white" size={34} />
-
-                </div>
-
-                <div>
-
-                    <h2 className="text-3xl font-black">
-
-                        AI Investment Report
-
-                    </h2>
-
-                    <p className="text-slate-400">
-
-                        Generated using Gemini AI
-
-                    </p>
-
-                </div>
-
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-6">
-
-                <StatCard
-                    icon={<TrendingUp className="text-green-400"/>}
-                    title="Recommendation"
-                    value={report.recommendation}
-                />
-
-                <StatCard
-                    icon={<ShieldCheck className="text-blue-400"/>}
-                    title="Confidence"
-                    value={`${report.confidence}%`}
-                />
-
-                <StatCard
-                    icon={<CircleDollarSign className="text-yellow-400"/>}
-                    title="Risk"
-                    value={report.risk}
-                />
-
-            </div>
-
-            <div className="
-                mt-8
-                rounded-2xl
-                bg-slate-950/40
-                border
-                border-slate-700
-                p-8
-            ">
-
-                <h3 className="text-2xl font-bold mb-4">
-
-                    AI Summary
-
-                </h3>
-
-                <p className="text-slate-300 leading-9">
-
-                    {report.summary}
-
-                </p>
-
-            </div>
-
-        </div>
-
-    );
-
-};
-
-const StatCard = ({ icon, title, value }) => (
-
-    <div className="
-        rounded-2xl
-        bg-slate-950/40
-        border
-        border-slate-700
-        p-6
-    ">
-
-        <div className="flex items-center gap-3">
-
-            {icon}
-
-            <span className="text-slate-400">
-
-                {title}
-
-            </span>
-
-        </div>
-
-        <h3 className="mt-6 text-3xl font-black">
-
-            {value}
-
-        </h3>
+      </h3>
 
     </div>
 
+    <p className="leading-8 text-slate-300 whitespace-pre-line">
+
+      {children || "No information available."}
+
+    </p>
+
+  </div>
 );
+
+const AIReportCard = ({ report }) => {
+  if (!report) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 35 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: .6 }}
+      whileHover={{ y: -5 }}
+      className="
+      relative
+      overflow-hidden
+      rounded-[32px]
+      border
+      border-white/10
+      bg-white/5
+      backdrop-blur-2xl
+      p-8
+      shadow-2xl
+      "
+    >
+      <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-blue-500/10 blur-[140px]" />
+
+      <div className="flex items-center justify-between mb-10">
+
+        <div className="flex items-center gap-4">
+
+          <div className="rounded-2xl bg-blue-500/10 p-4">
+
+            <Brain
+              className="text-blue-400"
+              size={26}
+            />
+
+          </div>
+
+          <div>
+
+            <h2 className="text-3xl font-black">
+
+              AI Investment Thesis
+
+            </h2>
+
+            <p className="text-slate-400">
+
+              Generated using financial data,
+              news sentiment and AI reasoning.
+
+            </p>
+
+          </div>
+
+        </div>
+
+        <Sparkles className="text-cyan-400" size={28} />
+
+      </div>
+
+      <div className="grid gap-6">
+
+        <Section
+          title="Investment Summary"
+          icon={<Target className="text-blue-400" />}
+        >
+          {report.summary}
+        </Section>
+
+        <Section
+          title="Valuation"
+          icon={<Brain className="text-cyan-400" />}
+        >
+          {report.valuation}
+        </Section>
+
+        <Section
+          title="Potential Risks"
+          icon={<ShieldAlert className="text-red-400" />}
+        >
+          {report.risks}
+        </Section>
+
+      </div>
+
+    </motion.div>
+  );
+};
 
 export default AIReportCard;

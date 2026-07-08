@@ -1,96 +1,228 @@
+import { motion } from "framer-motion";
 import {
-    ResponsiveContainer,
-    AreaChart,
-    Area,
-    CartesianGrid,
-    Tooltip,
-    XAxis,
-    YAxis
+  AreaChart,
+  TrendingUp,
+  CalendarDays,
+} from "lucide-react";
+
+import {
+  ResponsiveContainer,
+  AreaChart as Chart,
+  Area,
+  XAxis,
+  Tooltip,
+  CartesianGrid,
 } from "recharts";
 
 const StockChart = ({ financials }) => {
+  if (!financials) return null;
 
-    if (!financials) return null;
+  const current = Number(financials.currentPrice) || 0;
 
-    const data = [
-        { name: "Open", value: financials.openPrice },
-        { name: "Low", value: financials.lowPrice },
-        { name: "Current", value: financials.currentPrice },
-        { name: "High", value: financials.highPrice },
-        { name: "Close", value: financials.previousClose }
-    ];
+  const data = [
+    { day: "Mon", value: current - 8 },
+    { day: "Tue", value: current - 5 },
+    { day: "Wed", value: current - 3 },
+    { day: "Thu", value: current + 2 },
+    { day: "Fri", value: current },
+    { day: "Sat", value: current + 5 },
+    { day: "Sun", value: current + 9 },
+  ];
 
-    return (
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 35 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: .6 }}
+      whileHover={{ y: -5 }}
+      className="
+      relative
+      overflow-hidden
+      rounded-[32px]
+      border
+      border-white/10
+      bg-white/5
+      backdrop-blur-2xl
+      p-8
+      shadow-2xl
+      hover:border-cyan-500/30
+      "
+    >
+      {/* Glow */}
 
-        <div className="
-            rounded-3xl
-            bg-gradient-to-br
-            from-slate-900
-            to-slate-800
-            border
-            border-slate-700
-            shadow-xl
-            p-8
-        ">
+      <div className="absolute right-0 top-0 h-64 w-64 rounded-full bg-cyan-500/10 blur-[140px]" />
 
-            <h2 className="text-3xl font-black mb-8">
+      {/* Header */}
 
-                Stock Performance
+      <div className="mb-8 flex items-center justify-between">
 
-            </h2>
+        <div>
 
-            <div className="h-[450px]">
+          <div className="flex items-center gap-3">
 
-                <ResponsiveContainer>
+            <div className="rounded-2xl bg-cyan-500/10 p-3">
 
-                    <AreaChart data={data}>
-
-                        <defs>
-
-                            <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
-
-                                <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.7}/>
-
-                                <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
-
-                            </linearGradient>
-
-                        </defs>
-
-                        <CartesianGrid
-                            stroke="#334155"
-                            strokeDasharray="5 5"
-                        />
-
-                        <XAxis
-                            dataKey="name"
-                            stroke="#94a3b8"
-                        />
-
-                        <YAxis
-                            stroke="#94a3b8"
-                        />
-
-                        <Tooltip/>
-
-                        <Area
-                            type="monotone"
-                            dataKey="value"
-                            stroke="#38bdf8"
-                            strokeWidth={4}
-                            fill="url(#color)"
-                        />
-
-                    </AreaChart>
-
-                </ResponsiveContainer>
+              <AreaChart className="text-cyan-400" />
 
             </div>
 
+            <div>
+
+              <h2 className="text-3xl font-black">
+
+                Price Performance
+
+              </h2>
+
+              <p className="text-slate-400">
+
+                Simulated market trend
+
+              </p>
+
+            </div>
+
+          </div>
+
         </div>
 
-    );
+        {/* Time Buttons */}
 
+        <div className="hidden md:flex gap-3">
+
+          {["1D", "1W", "1M", "1Y"].map((item) => (
+
+            <button
+              key={item}
+              className="
+              rounded-xl
+              border
+              border-white/10
+              bg-white/5
+              px-4
+              py-2
+              text-sm
+              transition
+              hover:bg-cyan-500/20
+              hover:border-cyan-500/30
+              "
+            >
+              {item}
+            </button>
+
+          ))}
+
+        </div>
+
+      </div>
+
+      {/* Price */}
+
+      <div className="mb-8 flex items-center justify-between">
+
+        <div>
+
+          <h1 className="text-5xl font-black">
+
+            ${current}
+
+          </h1>
+
+          <div className="mt-2 flex items-center gap-2 text-green-400">
+
+            <TrendingUp size={18} />
+
+            <span>
+
+              {financials.percentChange}% Today
+
+            </span>
+
+          </div>
+
+        </div>
+
+        <div className="hidden lg:flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-5 py-3">
+
+          <CalendarDays size={18} />
+
+          Live Market
+
+        </div>
+
+      </div>
+
+      {/* Chart */}
+
+      <div className="h-[420px]">
+
+        <ResponsiveContainer width="100%" height="100%">
+
+          <Chart data={data}>
+
+            <defs>
+
+              <linearGradient
+                id="gradient"
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+              >
+
+                <stop
+                  offset="0%"
+                  stopColor="#06b6d4"
+                  stopOpacity={0.45}
+                />
+
+                <stop
+                  offset="100%"
+                  stopColor="#06b6d4"
+                  stopOpacity={0}
+                />
+
+              </linearGradient>
+
+            </defs>
+
+            <CartesianGrid
+              stroke="rgba(255,255,255,.05)"
+              vertical={false}
+            />
+
+            <XAxis
+              dataKey="day"
+              stroke="#64748b"
+              tickLine={false}
+              axisLine={false}
+            />
+
+            <Tooltip
+              contentStyle={{
+                background: "#111827",
+                border: "1px solid rgba(255,255,255,.1)",
+                borderRadius: 18,
+                color: "white",
+              }}
+            />
+
+            <Area
+              type="monotone"
+              dataKey="value"
+              stroke="#06b6d4"
+              strokeWidth={4}
+              fill="url(#gradient)"
+            />
+
+          </Chart>
+
+        </ResponsiveContainer>
+
+      </div>
+
+    </motion.div>
+  );
 };
 
 export default StockChart;

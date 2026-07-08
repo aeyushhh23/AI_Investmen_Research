@@ -59,159 +59,90 @@
 
         return (
 
-            <div className="min-h-screen bg-slate-950">
+           <div className="min-h-screen">
+  <div className="blur-orb orb-left" />
+  <div className="blur-orb orb-right" />
 
-                <Navbar />
-
+  <Navbar />
                 <main className="flex justify-center">
 
                     <Container>
 
                         <section className="py-16">
 
-                            <div className="text-center">
+                           <motion.section
+    initial={{ opacity: 0, y: 30 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: .6 }}
+    className="text-center max-w-6xl mx-auto"
+>
 
-        <span className="
-        inline-block
-        px-5
-        py-2
-        rounded-full
-        bg-blue-500/10
-        border
-        border-blue-500/30
-        text-blue-400
-        font-semibold
-        ">
+    <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full border border-blue-500/20 bg-blue-500/10">
 
-            Make Smarter Investment Decisions
+        <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse"/>
 
-        </span>
+        <p className="text-sm font-medium text-blue-300">
 
-        <h1 className="
-        mt-8
-        text-4xl
-        lg:text-5xl
+            AI Powered Investment Research Platform
+
+        </p>
+
+    </div>
+
+    <h1
+        className="
+        mt-10
+        text-5xl
+        lg:text-6xl
         font-black
-        bg-gradient-to-r
-        from-blue-400
-        via-cyan-400
-        to-indigo-400
-        bg-clip-text
-        text-transparent
-        ">
+        leading-tight
+        gradient-text
+        "
+    >
 
-            
-            AI Investment Research & Analysis Platform
+        Professional
+        <br/>
 
-        </h1>
+        Stock Intelligence
 
-        {/* <p className="
+    </h1>
+
+    <p
+        className="
         mt-8
-        text-slate-400
         text-xl
+        text-slate-400
         max-w-3xl
         mx-auto
         leading-9
-        ">
+        "
+    >
 
-            Analyze stocks using AI, live financial data,
-            market news, SWOT analysis, competitor comparison
-            and investment recommendations.
-
-        </p> */}
-
-    </div>
-
-                            <div cclassName="max-w-6xl mx-auto">
-
-                                <SearchBar
-                                    onSearch={handleSearch}
-                                    loading={loading}
-                                />
-                            {loading && <Loading />}
-                            </div>
-
-                            {error && (
-
-                                <div className="
-                                    mt-8
-                                    rounded-2xl
-                                    border
-                                    border-red-500
-                                    bg-red-500/20
-                                    p-5
-                                    text-center
-                                    text-red-300
-                                ">
-
-                                    {error}
-
-                                </div>
-
-                            )}
-                            {!analysis && !loading && (
-
-        <div
-        className="
-        mt-16
-        rounded-3xl
-        bg-gradient-to-br
-        from-slate-900
-        to-slate-800
-        border
-        border-slate-700
-        p-16
-        text-center
-        ">
-
-                {/* <h2 className="text-5xl font-black">
-
-                    Search Any Company
-
-                </h2> */}
-
-            
-
-        </div>
-
-    )}
-    {!analysis && !loading && (
-
-    <div
-    className="
-    mt-20
-    rounded-3xl
-    bg-gradient-to-br
-    from-slate-900
-    to-slate-800
-    border
-    border-slate-700
-    p-20
-    text-center
-    ">
-
-    <h2 className="text-5xl font-black">
-
-    Search Any Company
-
-    </h2>
-
-    <p className="mt-6 text-slate-400">
-
-    Tesla • Apple • Nvidia • Microsoft • Amazon • Google
+        Analyze any public company using financial data,
+        AI reasoning,
+        news sentiment,
+        SWOT analysis,
+        competitor research
+        and investment scoring.
 
     </p>
-    {!analysis && !loading && (
-        <>
-            {/* Search Any Company card */}
+    <div className="mt-12 max-w-5xl mx-auto">
 
-            <Features />
-        </>
-    )}
+    <div className="glass card-hover p-3">
+
+        <SearchBar
+            onSearch={handleSearch}
+            loading={loading}
+        />
 
     </div>
 
-    )}
+</div>
+
+{loading && <Loading />}
+
+</motion.section>
+   
                             {analysis && (
 
                                 <>
@@ -224,7 +155,7 @@
                                         grid-cols-1
                                         sm:grid-cols-2
                                         xl:grid-cols-4
-                                        gap-8
+                                        gap-10
                                     ">
 
                                         <StatsCard
@@ -271,11 +202,11 @@
                                         grid
                                         grid-cols-1
                                         xl:grid-cols-12
-                                        gap-8
+                                        gap-10
                                     ">
 
                                         <motion.div
-        className="xl:col-span-4 h-full"
+        className="xl:col-span-5 h-full"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
@@ -301,7 +232,7 @@
     </motion.div>
 
                                         <motion.div
-        className="xl:col-span-4 h-full"
+        className="xl:col-span-3 h-full"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
@@ -313,12 +244,12 @@
 
                                     {/* Stock Chart */}
 
-                                    <motion.div
-        className="mt-16"
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-    >
+                                   <motion.div
+className="mt-20 glass p-8"
+initial={{opacity:0,y:40}}
+animate={{opacity:1,y:0}}
+transition={{duration:.8}}
+>
         <StockChart financials={analysis.financials} />
     </motion.div>
 
@@ -356,24 +287,15 @@
 
                                     {/* News */}
 
-                                    <div className="mt-16">
+                                    <div className="flex items-center justify-between mb-8">
 
-                                        <h2 className="
-                                            text-4xl
-                                            font-bold
-                                            mb-8
-                                        ">
-                                            Latest News
+                                        <h2 className="text-4xl font-black">
+                                           Market News
+
                                         </h2>
 
-                                        <div className="
-                                            grid
-                                            grid-cols-1
-                                            md:grid-cols-2
-                                            xl:grid-cols-3
-                                            gap-8
-                                        ">
-
+                                        <div className="text-slate-400">
+Latest Financial Headlines
                                             {analysis.news?.slice(0, 6).map((article, index) => (
 
         <motion.div
@@ -409,6 +331,6 @@
         );
 
     };
-    <Footer/>
+    
 
     export default Dashboard;

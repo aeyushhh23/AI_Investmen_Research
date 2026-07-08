@@ -1,112 +1,149 @@
+import { motion } from "framer-motion";
 import {
-    Shield,
-    TriangleAlert,
-    Rocket,
-    Target
+  ShieldCheck,
+  AlertTriangle,
+  Rocket,
+  TrendingDown,
 } from "lucide-react";
 
+const SWOTItem = ({
+  title,
+  icon,
+  color,
+  data,
+}) => (
+  <motion.div
+    whileHover={{ y: -4 }}
+    className="
+    rounded-3xl
+    border
+    border-white/10
+    bg-white/5
+    backdrop-blur-xl
+    p-6
+    transition
+    hover:border-blue-500/30
+    "
+  >
+    <div className="flex items-center gap-3 mb-5">
+
+      <div
+        className="
+        rounded-2xl
+        p-3
+        bg-white/5
+        "
+      >
+        {icon}
+      </div>
+
+      <h3
+        className={`
+        text-xl
+        font-black
+        ${color}
+        `}
+      >
+        {title}
+      </h3>
+
+    </div>
+
+    <ul className="space-y-3">
+
+      {(data || []).map((item, index) => (
+
+        <li
+          key={index}
+          className="
+          rounded-xl
+          border
+          border-white/5
+          bg-black/10
+          px-4
+          py-3
+          text-slate-300
+          leading-7
+          "
+        >
+          {item}
+        </li>
+
+      ))}
+
+    </ul>
+
+  </motion.div>
+);
+
 const SWOTCard = ({ report }) => {
+  if (!report) return null;
 
-    if (!report?.swot) return null;
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 35 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: .6 }}
+      className="
+      rounded-[32px]
+      border
+      border-white/10
+      bg-white/5
+      backdrop-blur-2xl
+      p-8
+      shadow-2xl
+      "
+    >
+      <div className="mb-10">
 
-    const sections = [
+        <h2 className="text-4xl font-black">
 
-        {
-            title: "Strengths",
-            color: "border-green-500",
-            icon: <Shield className="text-green-400" />,
-            data: report.swot.strengths
-        },
+          SWOT Analysis
 
-        {
-            title: "Weaknesses",
-            color: "border-red-500",
-            icon: <TriangleAlert className="text-red-400" />,
-            data: report.swot.weaknesses
-        },
+        </h2>
 
-        {
-            title: "Opportunities",
-            color: "border-blue-500",
-            icon: <Rocket className="text-blue-400" />,
-            data: report.swot.opportunities
-        },
+        <p className="mt-2 text-slate-400">
 
-        {
-            title: "Threats",
-            color: "border-yellow-500",
-            icon: <Target className="text-yellow-400" />,
-            data: report.swot.threats
-        }
+          AI generated strategic analysis
 
-    ];
+        </p>
 
-    return (
+      </div>
 
-        <div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-            <h2 className="text-4xl font-black mb-8">
+        <SWOTItem
+          title="Strengths"
+          color="text-green-400"
+          icon={<ShieldCheck className="text-green-400" />}
+          data={report.swot?.strengths}
+        />
 
-                SWOT Analysis
+        <SWOTItem
+          title="Weaknesses"
+          color="text-yellow-400"
+          icon={<AlertTriangle className="text-yellow-400" />}
+          data={report.swot?.weaknesses}
+        />
 
-            </h2>
+        <SWOTItem
+          title="Opportunities"
+          color="text-cyan-400"
+          icon={<Rocket className="text-cyan-400" />}
+          data={report.swot?.opportunities}
+        />
 
-            <div className="grid md:grid-cols-2 gap-8">
+        <SWOTItem
+          title="Threats"
+          color="text-red-400"
+          icon={<TrendingDown className="text-red-400" />}
+          data={report.swot?.threats}
+        />
 
-                {sections.map((section) => (
+      </div>
 
-                    <div
-                        key={section.title}
-                        className={`
-                            rounded-3xl
-                            bg-gradient-to-br
-                            from-slate-900
-                            to-slate-800
-                            border
-                            ${section.color}
-                            p-8
-                        `}
-                    >
-
-                        <div className="flex items-center gap-3 mb-6">
-
-                            {section.icon}
-
-                            <h3 className="text-2xl font-bold">
-
-                                {section.title}
-
-                            </h3>
-
-                        </div>
-
-                        <ul className="space-y-4">
-
-                            {section.data?.map((item, index) => (
-
-                                <li
-                                    key={index}
-                                    className="text-slate-300 leading-8"
-                                >
-
-                                    • {item}
-
-                                </li>
-
-                            ))}
-
-                        </ul>
-
-                    </div>
-
-                ))}
-
-            </div>
-
-        </div>
-
-    );
-
+    </motion.div>
+  );
 };
 
 export default SWOTCard;
