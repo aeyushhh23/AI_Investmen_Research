@@ -8,7 +8,7 @@ const api = axios.create({
 });
 
 export const analyzeCompany = async (company) => {
-    const response = await api.post("/analyze", {
+    const response = await api.post("/api/analyze", {
         company,
     });
 
@@ -16,13 +16,13 @@ export const analyzeCompany = async (company) => {
 };
 export const getChart = async (symbol) => {
 
-    const response = await api.get(`/chart/${symbol}`);
+    const response = await api.get(`/api/chart/${symbol}`);
 
     return response.data.chart;
 };
 
 export const fetchCompanySuggestions = async (query) => {
-    const response = await api.get("/search", {
+    const response = await api.get("/apigit /search", {
         params: {
             query,
         },
