@@ -56,6 +56,7 @@ const SWOTItem = ({
         <li
           key={index}
           className="
+          swot-list-item
           rounded-xl
           border
           border-white/5

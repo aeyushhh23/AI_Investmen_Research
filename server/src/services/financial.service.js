@@ -1,25 +1,12 @@
-import { getFinancialMetricsFromFinnhub } from "../providers/financial.provider.js";
+import {
+    getQuote,
+    mapQuoteToFinancials
+} from "./quote.service.js";
 
 export const getFinancialData = async (symbol) => {
 
-    const financial = await getFinancialMetricsFromFinnhub(symbol);
+    const financial = await getQuote(symbol);
 
-    return {
-
-        currentPrice: financial.c,
-
-        highPrice: financial.h,
-
-        lowPrice: financial.l,
-
-        openPrice: financial.o,
-
-        previousClose: financial.pc,
-
-        change: financial.d,
-
-        percentChange: financial.dp
-
-    };
+    return mapQuoteToFinancials(financial);
 
 };

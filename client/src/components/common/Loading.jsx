@@ -11,14 +11,13 @@ const Loading = () => {
             w-full
             max-w-2xl
             rounded-3xl
-            bg-gradient-to-br
-            from-slate-900
-            to-slate-800
+            bg-white/90
             border
-            border-slate-700
+            border-slate-200
             p-12
             text-center
-            shadow-2xl
+            shadow-xl
+            shadow-slate-200/70
             ">
 
                 <LoaderCircle
@@ -33,7 +32,7 @@ const Loading = () => {
 
                 />
 
-                <h2 className="mt-8 text-4xl font-black">
+                <h2 className="mt-8 text-4xl font-black text-slate-950">
 
                     AI is analyzing...
 

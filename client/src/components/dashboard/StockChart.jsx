@@ -14,20 +14,27 @@ import {
   CartesianGrid,
 } from "recharts";
 
-const StockChart = ({ financials }) => {
+const StockChart = ({ financials, historical }) => {
   if (!financials) return null;
 
   const current = Number(financials.currentPrice) || 0;
+  const currency = financials.currency || "USD";
 
-  const data = [
-    { day: "Mon", value: current - 8 },
-    { day: "Tue", value: current - 5 },
-    { day: "Wed", value: current - 3 },
-    { day: "Thu", value: current + 2 },
-    { day: "Fri", value: current },
-    { day: "Sat", value: current + 5 },
-    { day: "Sun", value: current + 9 },
-  ];
+  const formatCurrency = (value) => new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency,
+    maximumFractionDigits: 2,
+  }).format(Number(value) || 0);
+
+  const data = Array.isArray(historical?.t)
+    ? historical.t.map((time, index) => ({
+      day: new Date(time * 1000).toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+      }),
+      value: Number(historical.c?.[index]),
+    })).filter((point) => Number.isFinite(point.value))
+    : [];
 
   return (
     <motion.div
@@ -76,7 +83,7 @@ const StockChart = ({ financials }) => {
 
               <p className="text-slate-400">
 
-                Simulated market trend
+                Live historical market trend
 
               </p>
 
@@ -124,7 +131,7 @@ const StockChart = ({ financials }) => {
 
           <h1 className="text-5xl font-black">
 
-            ${current}
+            {formatCurrency(current)}
 
           </h1>
 
@@ -146,7 +153,7 @@ const StockChart = ({ financials }) => {
 
           <CalendarDays size={18} />
 
-          Live Market
+          {financials.marketState || "Live Market"}
 
         </div>
 
@@ -155,6 +162,8 @@ const StockChart = ({ financials }) => {
       {/* Chart */}
 
       <div className="h-[420px]">
+
+        {data.length > 0 ? (
 
         <ResponsiveContainer width="100%" height="100%">
 
@@ -205,6 +214,7 @@ const StockChart = ({ financials }) => {
                 borderRadius: 18,
                 color: "white",
               }}
+              formatter={(value) => [formatCurrency(value), "Close"]}
             />
 
             <Area
@@ -218,6 +228,14 @@ const StockChart = ({ financials }) => {
           </Chart>
 
         </ResponsiveContainer>
+
+        ) : (
+
+          <div className="flex h-full items-center justify-center rounded-2xl border border-white/10 bg-slate-950/40 text-slate-400">
+            Live historical chart data is unavailable for this symbol.
+          </div>
+
+        )}
 
       </div>
 

@@ -59,6 +59,10 @@ const CompanyCard = ({ company }) => {
               src={company.logo}
               alt={company.companyName}
               className="h-16 w-16 object-contain"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(company.companyName)}&background=2563eb&color=fff&size=128`;
+              }}
             />
           </div>
 

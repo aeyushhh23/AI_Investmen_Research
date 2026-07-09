@@ -41,7 +41,6 @@ const StatsCard = ({
       bg-white/5
       backdrop-blur-2xl
       p-6
-      h-40
       shadow-xl
       hover:border-blue-500/40
       hover:shadow-blue-500/20

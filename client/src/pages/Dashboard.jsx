@@ -1,11 +1,12 @@
     import { useState } from "react";
     import toast from "react-hot-toast";
     import { motion } from "framer-motion";
+    import { Download, LoaderCircle } from "lucide-react";
     import Navbar from "../components/layout/Navbar";
     import Container from "../components/layout/Container";
+    import CursorField from "../components/common/CursorField";
     import Loading from "../components/common/Loading";
     import SearchBar from "../components/search/SearchBar";
-    import Features from "../components/home/Features";
     import StatsCard from "../components/dashboard/StatsCard";
     import CompanyCard from "../components/dashboard/CompanyCard";
     import FinancialCard from "../components/dashboard/FinancialCard";
@@ -16,12 +17,27 @@
     import SWOTCard from "../components/dashboard/SWOTCard";
     import CompetitorCard from "../components/dashboard/CompetitorCard";
     import NewsCard from "../components/dashboard/NewsCard";
-    import Footer from "../components/layout/Footer";
     import { analyzeCompany } from "../services/api";
+    import { downloadPDF } from "../utils/downloadPDF";
+
+    const formatCurrency = (value, currency = "USD") => {
+        const number = Number(value);
+
+        if (!Number.isFinite(number)) {
+            return "N/A";
+        }
+
+        return new Intl.NumberFormat("en-IN", {
+            style: "currency",
+            currency,
+            maximumFractionDigits: 2
+        }).format(number);
+    };
 
     const Dashboard = () => {
 
         const [loading, setLoading] = useState(false);
+        const [exporting, setExporting] = useState(false);
         const [analysis, setAnalysis] = useState(null);
         const [error, setError] = useState("");
 
@@ -55,14 +71,48 @@
             }
 
         };
+
+        const handleExportPDF = async () => {
+
+            if (!analysis) {
+
+                return;
+
+            }
+
+            try {
+
+                setExporting(true);
+
+                await downloadPDF({
+                    analysis,
+                    companyName: analysis.company?.companyName
+                });
+
+                toast.success("PDF report downloaded");
+
+            } catch (err) {
+
+                console.error(err);
+                toast.error("Unable to export PDF");
+
+            } finally {
+
+                setExporting(false);
+
+            }
+
+        };
         
 
         return (
 
-           <div className="min-h-screen">
+           <div className="relative min-h-screen overflow-hidden">
+  <CursorField />
   <div className="blur-orb orb-left" />
   <div className="blur-orb orb-right" />
 
+  <div className="relative z-10">
   <Navbar />
                 <main className="flex justify-center">
 
@@ -81,7 +131,7 @@
 
         <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse"/>
 
-        <p className="text-sm font-medium text-blue-300">
+        <p className="hero-eyebrow text-sm font-medium text-blue-300">
 
             AI Powered Investment Research Platform
 
@@ -96,6 +146,7 @@
         lg:text-6xl
         font-black
         leading-tight
+        hero-title
         gradient-text
         "
     >
@@ -111,6 +162,7 @@
         className="
         mt-8
         text-xl
+        hero-copy
         text-slate-400
         max-w-3xl
         mx-auto
@@ -141,11 +193,70 @@
 
 {loading && <Loading />}
 
+{error && (
+    <div className="mt-6 rounded-2xl border border-red-500/30 bg-red-500/10 px-5 py-4 text-sm font-semibold text-red-300">
+        {error}
+    </div>
+)}
+
 </motion.section>
+
+                            <div className="mt-12 flex justify-end">
+
+                                <motion.button
+                                    type="button"
+                                    whileHover={
+                                        analysis && !exporting
+                                            ? { y: -2, scale: 1.02 }
+                                            : undefined
+                                    }
+                                    whileTap={
+                                        analysis && !exporting
+                                            ? { scale: 0.96 }
+                                            : undefined
+                                    }
+                                    onClick={handleExportPDF}
+                                    disabled={!analysis || exporting}
+                                    className="
+                                    inline-flex
+                                    items-center
+                                    gap-3
+                                    rounded-2xl
+                                    bg-gradient-to-r
+                                    from-blue-600
+                                    to-cyan-500
+                                    px-6
+                                    py-3
+                                    font-bold
+                                    text-white
+                                    shadow-lg
+                                    shadow-blue-500/25
+                                    transition
+                                    hover:shadow-blue-500/35
+                                    disabled:cursor-not-allowed
+                                    disabled:opacity-45
+                                    disabled:hover:shadow-blue-500/25
+                                    "
+                                >
+
+                                    {exporting ? (
+                                        <LoaderCircle
+                                            size={18}
+                                            className="animate-spin"
+                                        />
+                                    ) : (
+                                        <Download size={18} />
+                                    )}
+
+                                    Export Report
+
+                                </motion.button>
+
+                            </div>
    
                             {analysis && (
 
-                                <>
+                                <div>
 
                                     {/* Statistics */}
 
@@ -160,7 +271,10 @@
 
                                         <StatsCard
                                             title="Current Price"
-                                            value={`$${analysis.financials.currentPrice}`}
+                                            value={formatCurrency(
+                                                analysis.financials.currentPrice,
+                                                analysis.financials.currency
+                                            )}
                                             color="text-green-400"
                                         />
 
@@ -250,7 +364,10 @@ initial={{opacity:0,y:40}}
 animate={{opacity:1,y:0}}
 transition={{duration:.8}}
 >
-        <StockChart financials={analysis.financials} />
+        <StockChart
+            financials={analysis.financials}
+            historical={analysis.historical}
+        />
     </motion.div>
 
                                     {/* AI Report */}
@@ -287,36 +404,36 @@ transition={{duration:.8}}
 
                                     {/* News */}
 
-                                    <div className="flex items-center justify-between mb-8">
+                                    <div className="mt-20 flex items-center justify-between mb-8">
 
                                         <h2 className="text-4xl font-black">
                                            Market News
-
                                         </h2>
 
                                         <div className="text-slate-400">
-Latest Financial Headlines
-                                            {analysis.news?.slice(0, 6).map((article, index) => (
-
-        <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-                delay: index * 0.1,
-                duration: 0.5
-            }}
-        >
-            <NewsCard article={article} />
-        </motion.div>
-
-    ))}
-
+                                            Latest Financial Headlines
                                         </div>
-
                                     </div>
 
-                                </>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                                        {analysis.news?.slice(0, 6).map((article, index) => (
+
+                                            <motion.div
+                                                key={index}
+                                                initial={{ opacity: 0, y: 30 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                transition={{
+                                                    delay: index * 0.1,
+                                                    duration: 0.5
+                                                }}
+                                            >
+                                                <NewsCard article={article} />
+                                            </motion.div>
+
+                                        ))}
+                                    </div>
+
+                                </div>
 
                             )}
 
@@ -325,6 +442,7 @@ Latest Financial Headlines
                     </Container>
 
                 </main>
+  </div>
 
             </div>
 

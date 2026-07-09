@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import {
-  ShieldCheck,
   TrendingUp,
   AlertTriangle,
   Brain,
@@ -11,11 +10,20 @@ const ScoreCard = ({ scores }) => {
   if (!scores) return null;
 
   const score = Number(scores.investmentScore);
+  const recommendation =
+    scores.recommendation ||
+    (
+      score >= 70 && scores.risk !== "High"
+        ? "BUY"
+        : score <= 40 || scores.risk === "High"
+        ? "SELL"
+        : "HOLD"
+    );
 
   const recommendationColor =
-    scores.recommendation === "BUY"
+    recommendation === "BUY"
       ? "bg-green-500/20 text-green-400 border-green-500/30"
-      : scores.recommendation === "HOLD"
+      : recommendation === "HOLD"
       ? "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
       : "bg-red-500/20 text-red-400 border-red-500/30";
 
@@ -86,7 +94,7 @@ const ScoreCard = ({ scores }) => {
 
         <div className="relative h-56 w-56">
 
-          <svg className="absolute inset-0 -rotate-90">
+          <svg viewBox="0 0 224 224" className="absolute inset-0 -rotate-90 w-full h-full">
 
             <circle
               cx="112"
@@ -121,19 +129,16 @@ const ScoreCard = ({ scores }) => {
 
           <div className="absolute inset-0 flex flex-col items-center justify-center">
 
-            <motion.h1
+            <motion.div
               initial={{ scale: .7 }}
               animate={{ scale: 1 }}
-              className="text-6xl font-black"
+              className="flex items-baseline gap-1"
             >
-              {score}
-            </motion.h1>
-
-            <p className="mt-2 text-slate-400">
-
-              /100
-
-            </p>
+              <h1 className="text-6xl font-black">{score}</h1>
+              <p className="text-xl text-slate-400 font-semibold">
+                /100
+              </p>
+            </motion.div>
 
           </div>
 
@@ -165,7 +170,7 @@ const ScoreCard = ({ scores }) => {
             ${recommendationColor}
             `}
           >
-            {scores.recommendation}
+            {recommendation}
           </span>
 
         </div>

@@ -21,4 +21,14 @@ export const getChart = async (symbol) => {
     return response.data.chart;
 };
 
+export const fetchCompanySuggestions = async (query) => {
+    const response = await api.get("/search", {
+        params: {
+            query,
+        },
+    });
+
+    return response.data.suggestions || [];
+};
+
 export default api;

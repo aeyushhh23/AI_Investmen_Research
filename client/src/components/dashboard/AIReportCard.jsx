@@ -4,6 +4,7 @@ import {
   Target,
   ShieldAlert,
   Sparkles,
+  TrendingUp,
 } from "lucide-react";
 
 const Section = ({ icon, title, children }) => (
@@ -43,6 +44,29 @@ const Section = ({ icon, title, children }) => (
 
 const AIReportCard = ({ report }) => {
   if (!report) return null;
+
+  const recommendation = (report.recommendation || "HOLD").toUpperCase();
+
+  const recommendationStyles = {
+    BUY: {
+      label: "BUY",
+      color: "border-green-500/30 bg-green-500/15 text-green-400",
+      message: "Buy signal: the analysis points to favorable upside against current risk."
+    },
+    HOLD: {
+      label: "HOLD",
+      color: "border-yellow-500/30 bg-yellow-500/15 text-yellow-400",
+      message: "Hold signal: the analysis is balanced, so waiting for a stronger setup is prudent."
+    },
+    SELL: {
+      label: "SELL",
+      color: "border-red-500/30 bg-red-500/15 text-red-400",
+      message: "Sell signal: the analysis points to an unfavorable risk-reward setup."
+    }
+  };
+
+  const recommendationMeta =
+    recommendationStyles[recommendation] || recommendationStyles.HOLD;
 
   return (
     <motion.div
@@ -101,6 +125,56 @@ const AIReportCard = ({ report }) => {
       </div>
 
       <div className="grid gap-6">
+        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+
+            <div className="flex items-center gap-3">
+
+              <div className="rounded-xl bg-blue-500/10 p-2">
+
+                <TrendingUp className="text-blue-400" />
+
+              </div>
+
+              <div>
+
+                <h3 className="text-xl font-bold">
+
+                  Investment Decision
+
+                </h3>
+
+                <div className="mt-2 leading-7 text-slate-300">
+
+                  {recommendationMeta.message}
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <span
+              className={`
+              inline-flex
+              w-fit
+              items-center
+              rounded-full
+              border
+              px-5
+              py-2
+              text-lg
+              font-black
+              ${recommendationMeta.color}
+              `}
+            >
+              {recommendationMeta.label}
+            </span>
+
+          </div>
+
+        </div>
 
         <Section
           title="Investment Summary"

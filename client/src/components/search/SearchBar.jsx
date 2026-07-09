@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { Search, Sparkles } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Building2, LoaderCircle, Search, Sparkles } from "lucide-react";
+import { fetchCompanySuggestions } from "../../services/api";
 
 const companies = [
     "Tesla",
@@ -7,12 +8,80 @@ const companies = [
     "Microsoft",
     "Nvidia",
     "Amazon",
-    "Google"
+    "Google",
+    "Reliance",
+    "TCS",
+    "Infosys",
+    "HDFC Bank",
+    "SBI",
+    "Tata Motors"
 ];
 
 const SearchBar = ({ onSearch, loading }) => {
 
     const [company, setCompany] = useState("");
+    const [suggestions, setSuggestions] = useState([]);
+    const [suggesting, setSuggesting] = useState(false);
+    const [showSuggestions, setShowSuggestions] = useState(false);
+    const [activeIndex, setActiveIndex] = useState(-1);
+
+    useEffect(() => {
+        const query = company.trim();
+
+        if (query.length < 1) {
+            return undefined;
+        }
+
+        let ignore = false;
+        const timeoutId = window.setTimeout(async () => {
+            try {
+                setSuggesting(true);
+
+                const results = await fetchCompanySuggestions(query);
+
+                if (!ignore) {
+                    setSuggestions(results);
+                    setShowSuggestions(results.length > 0);
+                    setActiveIndex(-1);
+                }
+            } catch (error) {
+                console.error(error);
+
+                if (!ignore) {
+                    setSuggestions([]);
+                    setShowSuggestions(false);
+                }
+            } finally {
+                if (!ignore) {
+                    setSuggesting(false);
+                }
+            }
+        }, 250);
+
+        return () => {
+            ignore = true;
+            window.clearTimeout(timeoutId);
+        };
+    }, [company]);
+
+    const selectSuggestion = (suggestion) => {
+        setCompany(suggestion.symbol);
+        setShowSuggestions(false);
+        setActiveIndex(-1);
+        onSearch(suggestion.symbol);
+    };
+
+    const handleCompanyChange = (e) => {
+        const value = e.target.value;
+
+        setCompany(value);
+
+        if (!value.trim()) {
+            setSuggestions([]);
+            setShowSuggestions(false);
+            setActiveIndex(-1);
+        }
+    };
 
     const handleSubmit = (e) => {
 
@@ -20,13 +89,46 @@ const SearchBar = ({ onSearch, loading }) => {
 
         if (!company.trim()) return;
 
+        setShowSuggestions(false);
+
         onSearch(company);
 
+    };
+
+    const handleKeyDown = (e) => {
+        if (!showSuggestions || suggestions.length === 0) {
+            return;
+        }
+
+        if (e.key === "ArrowDown") {
+            e.preventDefault();
+            setActiveIndex((index) => (
+                index + 1 >= suggestions.length ? 0 : index + 1
+            ));
+        }
+
+        if (e.key === "ArrowUp") {
+            e.preventDefault();
+            setActiveIndex((index) => (
+                index <= 0 ? suggestions.length - 1 : index - 1
+            ));
+        }
+
+        if (e.key === "Enter" && activeIndex >= 0) {
+            e.preventDefault();
+            selectSuggestion(suggestions[activeIndex]);
+        }
+
+        if (e.key === "Escape") {
+            setShowSuggestions(false);
+            setActiveIndex(-1);
+        }
     };
 
     const quickSearch = (name) => {
 
         setCompany(name);
+        setShowSuggestions(false);
 
         onSearch(name);
 
@@ -45,7 +147,7 @@ const SearchBar = ({ onSearch, loading }) => {
 
                     <Search
                         size={24}
-                        className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-500"
+                        className="search-icon absolute left-6 top-1/2 -translate-y-1/2 text-slate-500"
                     />
 
                     <input
@@ -54,11 +156,21 @@ const SearchBar = ({ onSearch, loading }) => {
 
                         value={company}
 
-                        onChange={(e)=>setCompany(e.target.value)}
+                        onChange={handleCompanyChange}
 
-                        placeholder="Search Tesla, Apple, Nvidia..."
+                        onFocus={() => setShowSuggestions(suggestions.length > 0)}
+
+                        onBlur={() => window.setTimeout(() => {
+                            setShowSuggestions(false);
+                            setActiveIndex(-1);
+                        }, 120)}
+
+                        onKeyDown={handleKeyDown}
+
+                        placeholder="Search Reliance, TCS, INFY.NS, AAPL..."
 
                         className="
+                        search-field
                         w-full
                         h-16
                         rounded-2xl
@@ -79,6 +191,58 @@ const SearchBar = ({ onSearch, loading }) => {
 
                     />
 
+                    {suggesting && (
+                        <LoaderCircle
+                            size={20}
+                            className="absolute right-5 top-1/2 -translate-y-1/2 animate-spin text-blue-300"
+                        />
+                    )}
+
+                    {showSuggestions && (
+                        <div className="search-suggestions absolute left-0 right-0 top-[74px] z-30 overflow-hidden rounded-2xl border border-slate-700 bg-slate-950/95 text-left shadow-2xl shadow-blue-950/40 backdrop-blur-xl">
+                            {suggestions.map((suggestion, index) => (
+                                <button
+                                    type="button"
+                                    key={suggestion.symbol}
+                                    onMouseDown={(event) => event.preventDefault()}
+                                    onClick={() => selectSuggestion(suggestion)}
+                                    className={`
+                                    search-suggestion-row
+                                    flex
+                                    w-full
+                                    items-center
+                                    gap-4
+                                    px-5
+                                    py-4
+                                    text-left
+                                    transition
+                                    ${activeIndex === index ? "search-suggestion-active bg-blue-600/25" : "hover:bg-white/5"}
+                                    `}
+                                >
+                                    <span className="search-suggestion-icon flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-500/10 text-blue-300">
+                                        <Building2 size={19} />
+                                    </span>
+
+                                    <span className="min-w-0 flex-1">
+                                        <span className="search-suggestion-title block truncate font-bold text-white">
+                                            {suggestion.name}
+                                        </span>
+
+                                        <span className="search-suggestion-meta mt-1 block truncate text-sm text-slate-400">
+                                            {suggestion.symbol}
+                                            {suggestion.exchange ? ` · ${suggestion.exchange}` : ""}
+                                            {suggestion.currency ? ` · ${suggestion.currency}` : ""}
+                                        </span>
+                                    </span>
+
+                                    <span className="search-suggestion-type shrink-0 rounded-full border border-slate-700 px-3 py-1 text-xs font-semibold text-slate-300">
+                                        {suggestion.type || "Equity"}
+                                    </span>
+                                </button>
+                            ))}
+                        </div>
+                    )}
+
                 </div>
 
                 <button
@@ -88,6 +252,7 @@ const SearchBar = ({ onSearch, loading }) => {
                     disabled={loading}
 
                     className="
+search-action
 px-5
 py-2
 rounded-full
@@ -129,6 +294,7 @@ hover:scale-105
                         onClick={()=>quickSearch(item)}
 
                         className="
+search-chip
 px-5
 py-2
 rounded-full

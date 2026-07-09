@@ -1,12 +1,11 @@
-import { createContext, useContext, useEffect, useState } from "react";
-
-const ThemeContext = createContext();
+import { useEffect, useState } from "react";
+import { ThemeContext } from "./themeStore";
 
 export const ThemeProvider = ({ children }) => {
 
     const [darkMode, setDarkMode] = useState(() => {
 
-        return localStorage.getItem("theme") !== "light";
+        return localStorage.getItem("theme") === "dark";
 
     });
 
@@ -15,11 +14,13 @@ export const ThemeProvider = ({ children }) => {
         if (darkMode) {
 
             document.documentElement.classList.add("dark");
+            document.documentElement.classList.remove("light");
             localStorage.setItem("theme", "dark");
 
         } else {
 
             document.documentElement.classList.remove("dark");
+            document.documentElement.classList.add("light");
             localStorage.setItem("theme", "light");
 
         }
@@ -42,5 +43,3 @@ export const ThemeProvider = ({ children }) => {
     );
 
 };
-
-export const useTheme = () => useContext(ThemeContext);

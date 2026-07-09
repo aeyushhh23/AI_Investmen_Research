@@ -1,46 +1,61 @@
-export const buildInvestmentPrompt = (analysis) => `
-You are a professional investment analyst.
+import { ChatPromptTemplate } from "@langchain/core/prompts";
 
-Analyze this company.
+export const investmentPrompt = ChatPromptTemplate.fromMessages([
+    [
+        "system",
+        [
+            "You are a senior investment research analyst.",
+            "Use the supplied company, market, news, competitor, and scoring data.",
+            "Return only JSON that follows the parser instructions exactly.",
+            "Do not include markdown fences or prose outside the JSON."
+        ].join(" ")
+    ],
+    [
+        "human",
+        [
+            "Generate an investment report with:",
+            "- Executive Summary",
+            "- Investment Recommendation",
+            "- Investment Score",
+            "- Risk Level",
+            "- Strengths",
+            "- Weaknesses",
+            "- Opportunities",
+            "- Threats",
+            "- Future Outlook",
+            "",
+            "Company:",
+            "{company}",
+            "",
+            "Financials:",
+            "{financials}",
+            "",
+            "Historical Data:",
+            "{historical}",
+            "",
+            "News:",
+            "{news}",
+            "",
+            "Competitors:",
+            "{competitors}",
+            "",
+            "Scores:",
+            "{scores}",
+            "",
+            "Parser instructions:",
+            "{formatInstructions}"
+        ].join("\n")
+    ]
+]);
 
-Company:
-${JSON.stringify(analysis.company)}
-
-Financials:
-${JSON.stringify(analysis.financials)}
-
-News:
-${JSON.stringify(analysis.news)}
-
-Return ONLY valid JSON.
-
-{
-  "recommendation":"BUY | HOLD | SELL",
-  "confidence":90,
-  "summary":"",
-
-  "strengths":[
-    "",
-    "",
-    ""
-  ],
-
-  "weaknesses":[
-    "",
-    "",
-    ""
-  ],
-
-  "opportunities":[
-    "",
-    "",
-    ""
-  ],
-
-  "threats":[
-    "",
-    "",
-    ""
-  ]
-}
-`;
+export const buildInvestmentPrompt = async (analysis, formatInstructions = "") => (
+    investmentPrompt.format({
+        company: JSON.stringify(analysis.company || {}),
+        financials: JSON.stringify(analysis.financials || {}),
+        historical: JSON.stringify(analysis.historical || analysis.history || {}),
+        news: JSON.stringify(analysis.news || []),
+        competitors: JSON.stringify(analysis.competitors || []),
+        scores: JSON.stringify(analysis.scores || {}),
+        formatInstructions
+    })
+);

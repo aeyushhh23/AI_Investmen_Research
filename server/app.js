@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import chartRoutes from "./src/routes/chart.routes.js";
 import analysisRoutes from "./src/routes/analysis.routes.js";
+import searchRoutes from "./src/routes/search.routes.js";
 
 const app = express();
 
@@ -18,4 +19,5 @@ app.get("/", (req, res) => {
 
 app.use("/api", analysisRoutes);
 app.use("/api/chart", chartRoutes);
+app.use("/api/search", searchRoutes);
 export default app;

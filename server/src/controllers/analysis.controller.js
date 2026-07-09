@@ -1,4 +1,4 @@
-import { analyzeInvestment } from "../services/analysis.service.js";
+import { investmentGraph } from "../graph/investment.graph.js";
 
 export const analyzeCompany = async (req, res) => {
 
@@ -19,7 +19,9 @@ export const analyzeCompany = async (req, res) => {
         }
 
         const analysis =
-            await analyzeInvestment(company);
+            await investmentGraph.invoke({
+                symbol: company
+            });
 
         return res.status(200).json({
 
