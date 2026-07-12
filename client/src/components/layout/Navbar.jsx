@@ -79,21 +79,12 @@ const Navbar = () => {
             </motion.button>
           </>
         ) : (
-          <>
-            <Link
-              to="/login"
-              className="nav-link-pill rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-bold transition hover:border-blue-400/30 hover:bg-white/10"
-            >
-              Login
-            </Link>
-
-            <Link
-              to="/register"
-              className="hidden rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 px-4 py-3 text-sm font-black text-white shadow-lg shadow-blue-500/20 transition hover:-translate-y-0.5 hover:shadow-blue-500/30 sm:inline-flex"
-            >
-              Register
-            </Link>
-          </>
+          <Link
+            to="/login"
+            className="rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 px-4 py-3 text-sm font-black text-white shadow-lg shadow-blue-500/20 transition hover:-translate-y-0.5 hover:shadow-blue-500/30"
+          >
+            Demo Login
+          </Link>
         )}
 
         <motion.div

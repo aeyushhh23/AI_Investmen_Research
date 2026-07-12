@@ -7,8 +7,6 @@ import {
 import api, {
     demoLoginUser,
     getCurrentUser,
-    loginUser,
-    registerUser,
     setAuthToken,
 } from "../services/api";
 import { AuthContext } from "./authStore";
@@ -99,24 +97,6 @@ export const AuthProvider = ({ children }) => {
         return () => api.interceptors.response.eject(interceptor);
     }, [clearSession]);
 
-    const login = useCallback(
-        async ({ email, password }) => {
-            const response = await loginUser({ email, password });
-            persistSession(response);
-            return response.user;
-        },
-        [persistSession]
-    );
-
-    const register = useCallback(
-        async ({ name, email, password }) => {
-            const response = await registerUser({ name, email, password });
-            persistSession(response);
-            return response.user;
-        },
-        [persistSession]
-    );
-
     const demoLogin = useCallback(async () => {
         const response = await demoLoginUser();
         persistSession(response);
@@ -131,9 +111,7 @@ export const AuthProvider = ({ children }) => {
         () => ({
             bootstrapping,
             isAuthenticated: Boolean(token && user),
-            login,
             logout,
-            register,
             demoLogin,
             token,
             user,
@@ -141,9 +119,7 @@ export const AuthProvider = ({ children }) => {
         [
             bootstrapping,
             demoLogin,
-            login,
             logout,
-            register,
             token,
             user,
         ]
