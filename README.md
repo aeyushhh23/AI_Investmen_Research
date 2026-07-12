@@ -1,1462 +1,576 @@
-# 🚀 AI Investment Research Agent
+# AI Investment Research Agent
 
 <p align="center">
-
-![React](https://img.shields.io/badge/React-19-blue?logo=react)
-![Node.js](https://img.shields.io/badge/Node.js-Express-green?logo=node.js)
-![LangChain](https://img.shields.io/badge/LangChain.js-AI-yellow)
-![LangGraph](https://img.shields.io/badge/LangGraph-Agent-orange)
-![Gemini](https://img.shields.io/badge/Google-Gemini-blue)
-![License](https://img.shields.io/badge/License-MIT-green)
-![Status](https://img.shields.io/badge/Status-Completed-success)
-
+  <img alt="React" src="https://img.shields.io/badge/React-19-blue?logo=react">
+  <img alt="Node.js" src="https://img.shields.io/badge/Node.js-Express-green?logo=node.js">
+  <img alt="LangChain" src="https://img.shields.io/badge/LangChain.js-AI-yellow">
+  <img alt="LangGraph" src="https://img.shields.io/badge/LangGraph-Agent-orange">
+  <img alt="Gemini" src="https://img.shields.io/badge/Google-Gemini-blue">
+  <img alt="Status" src="https://img.shields.io/badge/Status-Completed-success">
 </p>
 
----
+AI Investment Research Agent is a full-stack web application that automates company research and produces AI-assisted investment analysis. Users enter a company name or ticker, the backend gathers market data and news, and a LangGraph workflow uses Google Gemini to generate a structured investment report.
 
-# 📖 Overview
+> This project is for educational and evaluation purposes only. It is not financial advice.
 
-The **AI Investment Research Agent** is an AI-powered web application that automates company research and investment analysis.
+## Table Of Contents
 
-Instead of manually reading company profiles, financial statements, and recent news articles, users simply enter a company name. The application gathers relevant information, processes it through an AI workflow powered by **LangChain.js**, **LangGraph.js**, and **Google Gemini**, and produces an easy-to-understand investment recommendation.
+- [Overview](#overview)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Architecture](#architecture)
+- [Workflow](#workflow)
+- [Getting Started](#getting-started)
+- [Environment Variables](#environment-variables)
+- [API Endpoints](#api-endpoints)
+- [Deployment](#deployment)
+- [Design Decisions](#design-decisions)
+- [Trade-Offs](#trade-offs)
+- [Future Improvements](#future-improvements)
+- [Author](#author)
 
-The final output explains **whether the company is worth investing in or not**, along with detailed reasoning, opportunities, risks, and supporting evidence.
+## Overview
 
-This project was developed as part of the **InsideIIM × Altuni AI Labs AI Product Development Engineer Internship Assignment**.
+The application helps users evaluate public companies by combining:
 
----
+- Company profile data
+- Financial metrics
+- Historical chart data
+- Recent market news
+- AI-generated reasoning
+- Investment score and recommendation
+- SWOT and risk analysis
 
-# ✨ Features
+The final dashboard presents the output in a readable format with export-ready report sections.
 
-## 🔍 Company Research
+## Features
 
-- Search any publicly listed company
-- Company Profile
-- Industry Information
-- Market Capitalization
-- Exchange Details
-- Country
-- Website
+### Company Research
 
----
+- Search public companies by name or ticker
+- Display company profile information
+- Show industry, exchange, country, and website details
+- Surface competitor and market context
 
-## 📈 Financial Analysis
+### Financial Analysis
 
-- Business Overview
-- Financial Health
-- Revenue Insights
-- Growth Analysis
-- Risk Assessment
+- Financial health overview
+- Revenue and growth insights
+- Risk assessment
+- Market and valuation context
 
----
+### News Analysis
 
-## 📰 News Analysis
+- Fetches recent company and market news
+- Highlights important events
+- Supports sentiment-aware AI reasoning
 
-The application fetches recent company news to understand:
+### AI Investment Recommendation
 
-- Current events
-- Product launches
-- Partnerships
-- Earnings
-- Market sentiment
+The AI workflow generates:
 
----
+- Recommendation: BUY, HOLD, or SELL
+- Investment score
+- Summary and final verdict
+- Strengths, weaknesses, opportunities, and threats
+- Risk and valuation commentary
 
-## 🤖 AI Investment Recommendation
+### Demo Authentication
 
-Using **Google Gemini** with **LangChain.js** and **LangGraph.js**, the application generates:
+- Demo-only login flow
+- JWT-based session
+- Protected dashboard and profile routes
+- No database dependency required
 
-- Investment Recommendation
-- Confidence Level
-- Strengths
-- Weaknesses
-- Opportunities
-- Risks
-- Final Verdict
+### Modern UI
 
----
+- React dashboard
+- Responsive layout
+- Dark and light mode support
+- Animated but optimized background visuals
+- PDF export support
 
-## 🔐 Authentication
+## Tech Stack
 
-- Secure Login
-- JWT Authentication
-- Demo Login
-- Protected Dashboard
+| Layer | Tools |
+| --- | --- |
+| Frontend | React, Vite, Tailwind CSS, Framer Motion, Recharts, Axios |
+| Backend | Node.js, Express.js, JWT |
+| AI | LangChain.js, LangGraph.js, Google Gemini |
+| Data Providers | Finnhub, FMP, Alpha Vantage, Twelve Data, NewsAPI, Marketaux |
+| Export | html2canvas, jsPDF |
+| Deployment | Render-compatible backend, Vite-compatible frontend |
 
----
-
-## 🎨 Modern UI
-
-- Responsive Design
-- Professional Dashboard
-- Dark Theme
-- Fast Performance
-
----
-
-# 🛠 Tech Stack
-
-## Frontend
-
-- React
-- Vite
-- Tailwind CSS
-- Axios
-- React Router
-
----
-
-## Backend
-
-- Node.js
-- Express.js
-- JWT Authentication
-- bcrypt
-
----
-
-## AI Stack
-
-- LangChain.js
-- LangGraph.js
-- Google Gemini
-
----
-
-## Financial Data
-
-- Finnhub API
-
----
-
-## Deployment
-
-- Vercel (Frontend)
-- Render (Backend)
-
----
-
-# 📂 Project Structure
+## Project Structure
 
 ```text
-AI-Investment-Research-Agent
-
-│
-├── frontend
-│   │
-│   ├── src
-│   │   ├── assets
-│   │   ├── components
-│   │   ├── pages
-│   │   ├── services
-│   │   ├── hooks
-│   │   ├── utils
-│   │   ├── App.jsx
-│   │   └── main.jsx
-│   │
-│   └── package.json
-│
-├── server
-│   │
-│   ├── controllers
-│   ├── middleware
-│   ├── routes
-│   ├── services
-│   │   ├── companyService.js
-│   │   ├── geminiService.js
-│   │   ├── langchainService.js
-│   │   ├── langgraphService.js
-│   │   └── promptBuilder.js
-│   │
-│   ├── utils
-│   ├── server.js
-│   └── package.json
-│
-├── README.md
-└── .env.example
+AI Investment/
+|-- client/
+|   |-- public/
+|   |-- src/
+|   |   |-- assets/
+|   |   |-- components/
+|   |   |-- context/
+|   |   |-- pages/
+|   |   |-- services/
+|   |   |-- utils/
+|   |   |-- App.jsx
+|   |   `-- main.jsx
+|   |-- .env.example
+|   `-- package.json
+|-- server/
+|   |-- src/
+|   |   |-- auth/
+|   |   |-- chains/
+|   |   |-- config/
+|   |   |-- controllers/
+|   |   |-- graph/
+|   |   |-- middleware/
+|   |   |-- nodes/
+|   |   |-- prompts/
+|   |   |-- providers/
+|   |   |-- routes/
+|   |   |-- services/
+|   |   `-- utils/
+|   |-- .env.example
+|   |-- app.js
+|   |-- server.js
+|   `-- package.json
+|-- scripts/
+|-- package.json
+`-- README.md
 ```
 
----
-
-# 🏗 High-Level Architecture
+## Architecture
 
 ```mermaid
 flowchart LR
-
-A[User]
-
-A --> B[React Frontend]
-
-B --> C[Express Backend]
-
-C --> D[Finnhub API]
-
-C --> E[LangChain]
-
-E --> F[LangGraph]
-
-F --> G[Google Gemini]
-
-G --> F
-
-F --> C
-
-C --> B
-
-B --> A
+    User["User"] --> Client["React Client"]
+    Client --> API["Express API"]
+    API --> Providers["Market Data Providers"]
+    API --> Graph["LangGraph Workflow"]
+    Graph --> Chain["LangChain Prompt + Parser"]
+    Chain --> Gemini["Google Gemini"]
+    Gemini --> Chain
+    Chain --> Graph
+    Graph --> API
+    API --> Client
+    Client --> User
 ```
 
----
-
-# 🔄 Complete System Workflow
+## Workflow
 
 ```mermaid
 flowchart TD
-
-A[User Enters Company Name]
-
-A --> B[Frontend]
-
-B --> C[Backend API]
-
-C --> D[Validate Request]
-
-D --> E[Fetch Company Profile]
-
-D --> F[Fetch Financial Data]
-
-D --> G[Fetch Company News]
-
-E --> H[Merge Research Data]
-
-F --> H
-
-G --> H
-
-H --> I[LangChain Prompt Builder]
-
-I --> J[LangGraph Workflow]
-
-J --> K[Google Gemini]
-
-K --> L[Investment Analysis]
-
-L --> M[Recommendation]
-
-M --> N[Return JSON]
-
-N --> O[Dashboard]
+    A["User enters company name"] --> B["Client sends POST /api/analyze"]
+    B --> C["Express validates request"]
+    C --> D["Fetch company profile"]
+    C --> E["Fetch financial data"]
+    C --> F["Fetch news and market context"]
+    D --> G["Merge research state"]
+    E --> G
+    F --> G
+    G --> H["LangGraph nodes"]
+    H --> I["LangChain prompt"]
+    I --> J["Google Gemini"]
+    J --> K["Structured investment report"]
+    K --> L["Dashboard cards and PDF export"]
 ```
 
----
-
-# 🤖 AI Agent Workflow
-
-```mermaid
-flowchart TD
-
-Company Name
-
--->
-
-Research Agent
-
-Research Agent
-
--->
-
-Company Profile
-
-Research Agent
-
--->
-
-Financial Data
-
-Research Agent
-
--->
-
-Latest News
-
-Company Profile
-
--->
-
-Prompt Builder
-
-Financial Data
-
--->
-
-Prompt Builder
-
-Latest News
-
--->
-
-Prompt Builder
-
-Prompt Builder
-
--->
-
-LangChain
-
-LangChain
-
--->
-
-LangGraph
-
-LangGraph
-
--->
-
-Gemini
-
-Gemini
-
--->
-
-Investment Report
-
-Investment Report
-
--->
-
-Dashboard
-```
-
----
-
-# 🧠 LangGraph Execution Flow
+## LangGraph Execution
 
 ```mermaid
 flowchart LR
-
-Start
-
--->
-
-Research
-
--->
-
-Financial Analysis
-
--->
-
-News Analysis
-
--->
-
-Prompt Engineering
-
--->
-
-Gemini AI
-
--->
-
-Investment Decision
-
--->
-
-Generate Report
-
--->
-
-End
+    Start --> Company["Company Node"]
+    Company --> Financial["Financial Node"]
+    Company --> History["History Node"]
+    Company --> News["News Node"]
+    Company --> Competitors["Competitor Node"]
+    Financial --> Scores["Scores Node"]
+    History --> Scores
+    News --> Scores
+    Competitors --> Scores
+    Scores --> AI["Investment Analysis Node"]
+    AI --> Done["Workflow Finished"]
+    Done --> End
 ```
 
----
-
-# 🔌 Request Lifecycle
+## Request Lifecycle
 
 ```mermaid
 sequenceDiagram
+    participant User
+    participant Client as React Client
+    participant API as Express API
+    participant Data as Data Providers
+    participant Graph as LangGraph
+    participant Gemini as Gemini
 
-participant User
-
-participant React
-
-participant Backend
-
-participant Finnhub
-
-participant LangChain
-
-participant LangGraph
-
-participant Gemini
-
-User->>React: Search Company
-
-React->>Backend: POST /api/analyze
-
-Backend->>Finnhub: Fetch Company Data
-
-Finnhub-->>Backend: Company Information
-
-Backend->>LangChain: Build Prompt
-
-LangChain->>LangGraph: Execute Workflow
-
-LangGraph->>Gemini: Analyze Company
-
-Gemini-->>LangGraph: Investment Report
-
-LangGraph-->>Backend: Final Analysis
-
-Backend-->>React: JSON Response
-
-React-->>User: Display Dashboard
+    User->>Client: Search company
+    Client->>API: POST /api/analyze
+    API->>Data: Fetch profile, financials, news
+    Data-->>API: Provider responses
+    API->>Graph: Invoke workflow
+    Graph->>Gemini: Generate structured analysis
+    Gemini-->>Graph: Investment report
+    Graph-->>API: Final state
+    API-->>Client: JSON response
+    Client-->>User: Render dashboard
 ```
 
----
+## Getting Started
 
-# 📊 Investment Decision Pipeline
+### Prerequisites
 
-```mermaid
-flowchart LR
-
-Company
-
--->
-
-Business Quality
-
--->
-
-Financial Strength
-
--->
-
-Growth
-
--->
-
-Market Position
-
--->
-
-News Sentiment
-
--->
-
-Risk Assessment
-
--->
-
-Gemini
-
--->
-
-Recommendation
-```
-# ⚙️ Installation Guide
-
-## Prerequisites
-
-Before running the project, ensure you have the following installed:
-
-- Node.js (v18 or above)
+- Node.js 20 or newer recommended
 - npm
 - Git
-- A Finnhub API Key
-- A Google Gemini API Key
+- Google Gemini API key
+- At least one market data provider key
 
----
-
-## Clone the Repository
+### Clone The Repository
 
 ```bash
 git clone https://github.com/yourusername/AI-Investment-Research-Agent.git
-
 cd AI-Investment-Research-Agent
 ```
 
----
+### Install Dependencies
 
-## Install Frontend Dependencies
-
-```bash
-cd frontend
-npm install
-```
-
----
-
-## Install Backend Dependencies
+Install all workspace dependencies:
 
 ```bash
-cd ../server
-npm install
+npm install --prefix client
+npm install --prefix server
 ```
 
----
+### Configure Environment
 
-# 🔑 Environment Variables
+Create a server environment file:
 
-Create a `.env` file inside the **server** folder.
+```bash
+cp server/.env.example server/.env
+```
+
+Create a client environment file:
+
+```bash
+cp client/.env.example client/.env
+```
+
+Update the values in both files before starting the app.
+
+### Run In Development
+
+Start both client and server from the project root:
+
+```bash
+npm run dev
+```
+
+Or run them separately:
+
+```bash
+npm run dev:server
+npm run dev:client
+```
+
+Default URLs:
+
+- Frontend: `http://localhost:5173`
+- Backend: `http://localhost:5000`
+
+### Build The Client
+
+```bash
+npm run build
+```
+
+## Environment Variables
+
+### Server
+
+Create `server/.env`:
 
 ```env
 PORT=5000
+NODE_ENV=development
+JWT_SECRET=replace_with_a_long_random_secret
+JWT_EXPIRES_IN=7d
+DEMO_USER_EMAIL=demo@ai-investment.local
+DEMO_USER_NAME=Demo Analyst
 
-JWT_SECRET=your_jwt_secret
+API_REQUEST_TIMEOUT_MS=10000
+API_REQUEST_RETRIES=2
 
-GEMINI_API_KEY=your_gemini_api_key
+FINNHUB_API_KEY=your_finnhub_api_key_here
+FMP_API_KEY=your_financial_modeling_prep_api_key_here
+ALPHA_VANTAGE_API_KEY=your_alpha_vantage_api_key_here
+TWELVE_DATA_API_KEY=your_twelve_data_api_key_here
 
-FINNHUB_API_KEY=your_finnhub_api_key
+NEWS_API_KEY=your_newsapi_api_key_here
+MARKETAUX_API_KEY=your_marketaux_api_key_here
 
-DEMO_EMAIL=demo@example.com
+GEMINI_API_KEY=your_gemini_api_key_here
+GEMINI_MODEL=gemini-2.5-flash
 
-DEMO_PASSWORD=demo123
+OPENROUTER_API_KEY=your_openrouter_api_key_here
+OPENROUTER_MODEL=openai/gpt-4o-mini
+
+GROQ_API_KEY=your_groq_api_key_here
+GROQ_MODEL=llama-3.1-8b-instant
 ```
 
----
-
-## Start Backend
+Generate a secure JWT secret with:
 
 ```bash
-npm run dev
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
 ```
 
-Backend will run on
+### Client
 
-```
-http://localhost:5000
-```
+Create `client/.env`:
 
----
-
-## Start Frontend
-
-```bash
-cd frontend
-
-npm run dev
+```env
+VITE_API_BASE_URL=http://localhost:5000
 ```
 
-Frontend will run on
+For production, set `VITE_API_BASE_URL` to your deployed backend URL.
 
+## API Endpoints
+
+### Health Check
+
+```http
+GET /
 ```
-http://localhost:5173
-```
-
----
-
-# 🚀 Application Flow
-
-```mermaid
-flowchart TD
-
-Start
-
--->
-
-Login
-
--->
-
-Dashboard
-
--->
-
-Search Company
-
--->
-
-Backend API
-
--->
-
-Collect Financial Data
-
--->
-
-Collect Company Profile
-
--->
-
-Collect News
-
--->
-
-LangChain
-
--->
-
-LangGraph
-
--->
-
-Gemini Analysis
-
--->
-
-Recommendation
-
--->
-
-Display Dashboard
-
--->
-
-End
-```
-
----
-
-# 🧩 LangChain Workflow
-
-LangChain is responsible for orchestrating the AI pipeline.
-
-Responsibilities:
-
-- Preparing prompts
-- Combining structured financial data
-- Formatting company news
-- Sending context to Gemini
-- Returning structured output
-
-Workflow:
-
-```mermaid
-flowchart LR
-
-Financial Data
-
--->
-
-Prompt Builder
-
-Company News
-
--->
-
-Prompt Builder
-
-Company Profile
-
--->
-
-Prompt Builder
-
-Prompt Builder
-
--->
-
-LangChain
-
-LangChain
-
--->
-
-Gemini
-```
-
----
-
-# 🧠 LangGraph Workflow
-
-LangGraph manages the execution sequence of different AI tasks.
-
-Each node represents a logical stage.
-
-```mermaid
-flowchart TD
-
-Start
-
--->
-
-Research Node
-
--->
-
-Financial Node
-
--->
-
-News Node
-
--->
-
-Prompt Node
-
--->
-
-Gemini Node
-
--->
-
-Recommendation Node
-
--->
-
-End
-```
-
----
-
-# 📡 API Endpoints
-
-## Authentication
-
-### Register
-
-```
-POST /api/auth/register
-```
-
-Request
-
-```json
-{
-  "name":"John",
-  "email":"john@example.com",
-  "password":"password123"
-}
-```
-
----
-
-### Login
-
-```
-POST /api/auth/login
-```
-
-Request
-
-```json
-{
-  "email":"john@example.com",
-  "password":"password123"
-}
-```
-
----
 
 ### Demo Login
 
-```
-POST /api/auth/demo-login
+```http
+POST /api/auth/demo
 ```
 
-Returns
+Example response:
 
 ```json
 {
-   "token":"JWT_TOKEN"
+  "success": true,
+  "token": "JWT_TOKEN",
+  "user": {
+    "id": "demo-user",
+    "name": "Demo Analyst",
+    "email": "demo@ai-investment.local",
+    "avatar": "",
+    "authProvider": "demo"
+  }
 }
 ```
 
----
+### Current User
 
-# Company Analysis
+```http
+GET /api/auth/me
+Authorization: Bearer JWT_TOKEN
+```
 
 ### Analyze Company
 
-```
+```http
 POST /api/analyze
+Content-Type: application/json
 ```
 
-Request
+Request:
 
 ```json
 {
-   "company":"Apple"
+  "company": "Apple"
 }
 ```
 
-Example Response
+### Chart Data
 
-```json
-{
-   "recommendation":"Invest",
-
-   "confidence":"High",
-
-   "strengths":[
-      "Strong revenue",
-      "Brand loyalty",
-      "Cash reserves"
-   ],
-
-   "risks":[
-      "Regulatory pressure",
-      "Market competition"
-   ],
-
-   "summary":"Apple remains a strong long-term investment."
-}
-```
-
----
-
-# 🔄 Backend Processing Pipeline
-
-```mermaid
-flowchart LR
-
-Client
-
--->
-
-Express API
-
--->
-
-Validation
-
--->
-
-Finnhub
-
--->
-
-Prompt Builder
-
--->
-
-LangChain
-
--->
-
-LangGraph
-
--->
-
-Gemini
-
--->
-
-Parser
-
--->
-
-JSON Response
-```
-
----
-
-# 📥 Request Processing
-
-```mermaid
-sequenceDiagram
-
-participant User
-
-participant Frontend
-
-participant API
-
-participant Finnhub
-
-participant Gemini
-
-User->>Frontend: Search Microsoft
-
-Frontend->>API: POST /api/analyze
-
-API->>Finnhub: Get Profile
-
-Finnhub-->>API: Company Data
-
-API->>Gemini: AI Prompt
-
-Gemini-->>API: Analysis
-
-API-->>Frontend: JSON
-
-Frontend-->>User: Dashboard
-```
-
----
-
-# 🔍 Data Sources
-
-The project gathers information from multiple sources before generating an investment recommendation.
-
-| Source | Purpose |
-|---------|----------|
-| Finnhub API | Company Profile |
-| Finnhub API | Financial Metrics |
-| Finnhub API | Market News |
-| Google Gemini | Investment Reasoning |
-| LangChain | Prompt Orchestration |
-| LangGraph | Workflow Management |
-
----
-
-# 📈 AI Decision Criteria
-
-The recommendation is generated after evaluating several aspects.
-
-```mermaid
-mindmap
-  root((Investment Decision))
-    Company Profile
-    Financial Health
-    Revenue Growth
-    Industry Position
-    Risks
-    Opportunities
-    Competition
-    Market News
-    Future Outlook
-```
-
----
-
-# 🛡 Error Handling
-
-The application gracefully handles:
-
-- Invalid company names
-- Missing API responses
-- API rate limits
-- Network failures
-- Invalid authentication
-- Empty requests
-- AI generation failures
-- Timeout errors
-
-Whenever an error occurs, meaningful feedback is shown to the user instead of exposing server errors.
-
----
-
-# 📱 Responsive Design
-
-The interface has been optimized for:
-
-- Desktop
-- Laptop
-- Tablet
-- Mobile Devices
-
-The dashboard automatically adjusts layouts to provide the best user experience across different screen sizes.
-# 📊 Example Runs
-
-The following examples demonstrate how the AI Investment Research Agent evaluates different companies.
-
----
-
-## Example 1 — Apple Inc.
-
-### Input
-
-```
-Apple
-```
-
-### AI Recommendation
-
-✅ **INVEST**
-
-### Analysis Summary
-
-- Strong global brand recognition
-- Consistent revenue growth
-- Healthy cash reserves
-- Strong ecosystem
-- Continuous innovation
-
-### Risks
-
-- Regulatory scrutiny
-- Dependence on iPhone sales
-
-### Confidence
-
-⭐⭐⭐⭐⭐ (Very High)
-
----
-
-## Example 2 — Tesla
-
-### Input
-
-```
-Tesla
-```
-
-### AI Recommendation
-
-🟡 **INVEST WITH CAUTION**
-
-### Analysis Summary
-
-- EV market leader
-- Strong long-term growth
-- AI and autonomous driving potential
-- Premium valuation
-
-### Risks
-
-- High volatility
-- Increasing competition
-- Margin pressure
-
-### Confidence
-
-⭐⭐⭐⭐☆
-
----
-
-## Example 3 — NVIDIA
-
-### Input
-
-```
-NVIDIA
-```
-
-### AI Recommendation
-
-✅ **STRONG INVEST**
-
-### Analysis Summary
-
-- AI market leader
-- Strong GPU demand
-- Excellent earnings
-- Rapid revenue growth
-
-### Risks
-
-- Semiconductor supply chain
-- High market expectations
-
-### Confidence
-
-⭐⭐⭐⭐⭐
-
----
-
-## Example 4 — Microsoft
-
-### Input
-
-```
-Microsoft
-```
-
-### AI Recommendation
-
-✅ **INVEST**
-
-### Analysis Summary
-
-- Azure cloud growth
-- Strong AI investments
-- Diversified business
-- Stable financial performance
-
-### Risks
-
-- Regulatory challenges
-- Cloud competition
-
-### Confidence
-
-⭐⭐⭐⭐⭐
-
----
-
-# 📸 Screenshots
-
-> Add screenshots of your application here before submission.
-
-Suggested screenshots:
-
-```
-screenshots/
-
-├── login.png
-├── dashboard.png
-├── company-search.png
-├── analysis-report.png
-├── recommendation.png
-└── mobile-view.png
+```http
+GET /api/chart/:symbol
 ```
 
 Example:
 
-```markdown
-## Login
-
-![Login](screenshots/login.png)
-
-## Dashboard
-
-![Dashboard](screenshots/dashboard.png)
-
-## Analysis
-
-![Analysis](screenshots/analysis-report.png)
+```http
+GET /api/chart/AAPL
 ```
 
----
+### Company Search
 
-# 🚀 Deployment
-
-## Frontend
-
-Hosted on **Vercel**
-
-```
-https://your-project.vercel.app
+```http
+GET /api/search?query=apple
 ```
 
----
-
-## Backend
-
-Hosted on **Render**
-
-```
-https://your-api.onrender.com
-```
-
----
-
-## Deployment Workflow
-
-```mermaid
-flowchart LR
-
-Developer
-
--->
-
-GitHub
-
--->
-
-Vercel
-
-Developer
-
--->
-
-GitHub
-
--->
-
-Render
-
-Render
-
--->
-
-Gemini API
-
-Render
-
--->
-
-Finnhub API
-
-Vercel
-
--->
-
-User
-```
-
----
-
-# ⚖️ Key Design Decisions
-
-## Why React?
-
-- Fast development
-- Component-based architecture
-- Excellent ecosystem
-- Easy deployment
-
----
-
-## Why Express.js?
-
-- Lightweight
-- Fast API development
-- Easy middleware support
-
----
-
-## Why LangChain?
-
-LangChain provides:
-
-- Prompt templates
-- LLM orchestration
-- Structured AI pipelines
-- Easy integration with Gemini
-
----
-
-## Why LangGraph?
-
-LangGraph enables:
-
-- Multi-step workflows
-- State management
-- Agent execution
-- Modular reasoning pipeline
-
----
-
-## Why Gemini?
-
-Google Gemini was selected because:
-
-- Excellent reasoning capability
-- Fast response time
-- Free API tier
-- Good structured output generation
-
----
-
-## Why Finnhub?
-
-Finnhub provides:
-
-- Company profile
-- Financial metrics
-- Market news
-- Reliable stock information
-
----
-
-# ⚠ Trade-offs
-
-To complete the assignment within the available time, the following trade-offs were made:
-
-### Included
-
-- AI-powered investment recommendation
-- Authentication
-- Financial research
-- News analysis
-- Responsive UI
-- Deployment
-
----
-
-### Left Out
-
-- Portfolio management
-- Watchlists
-- Historical stock charts
-- Real-time streaming prices
-- Technical indicators
-- Multi-agent collaboration
-- Database persistence for search history
-
----
-
-# 🐞 Challenges Faced
-
-During development, several technical challenges were encountered.
-
-## API Integration
-
-- Finnhub API formatting
-- Error handling
-- Rate limits
-
----
-
-## AI Prompt Engineering
-
-- Reducing hallucinations
-- Improving recommendation quality
-- Formatting AI responses
-
----
+## Data Sources
+
+| Source | Purpose |
+| --- | --- |
+| Finnhub | Company profile, financial metrics, market data |
+| FMP | Financial data fallback |
+| Alpha Vantage | Market data fallback |
+| Twelve Data | Chart and quote data |
+| NewsAPI | Company news |
+| Marketaux | Market news fallback |
+| Google Gemini | Investment reasoning and report generation |
+
+## Error Handling
+
+The application handles:
+
+- Empty company input
+- Invalid symbols
+- Missing provider API keys
+- Provider rate limits
+- Network failures
+- AI generation errors
+- Invalid or expired JWT sessions
+
+User-facing errors are shown through toast messages and dashboard states.
 
 ## Deployment
 
-- Environment variables
-- Backend deployment
-- CORS configuration
+### Backend On Render
 
----
+Use the `server` folder as the service root if Render asks for one.
 
-## Authentication
+Recommended settings:
 
-- JWT validation
-- Protected routes
-- Demo login implementation
+```text
+Build Command: npm install
+Start Command: npm start
+```
 
----
+Required backend environment variables:
 
-## UI Improvements
+```env
+NODE_ENV=production
+JWT_SECRET=your_generated_secret
+JWT_EXPIRES_IN=7d
+GEMINI_API_KEY=your_gemini_api_key
+```
 
+Add provider keys for richer results:
+
+```env
+FINNHUB_API_KEY=...
+FMP_API_KEY=...
+ALPHA_VANTAGE_API_KEY=...
+TWELVE_DATA_API_KEY=...
+NEWS_API_KEY=...
+MARKETAUX_API_KEY=...
+```
+
+MongoDB is not required for the current demo-only version.
+
+### Frontend
+
+Deploy the `client` folder to any Vite-compatible host.
+
+Recommended settings:
+
+```text
+Build Command: npm install && npm run build
+Publish Directory: dist
+```
+
+Set:
+
+```env
+VITE_API_BASE_URL=https://your-backend.onrender.com
+```
+
+## Design Decisions
+
+### React And Vite
+
+React and Vite provide a fast UI development workflow, strong component composition, and straightforward production builds.
+
+### Express API
+
+Express keeps the backend lightweight while making it easy to organize routes, controllers, middleware, and provider services.
+
+### LangChain And LangGraph
+
+LangChain handles prompt composition and structured parsing. LangGraph coordinates the multi-step investment workflow through dedicated nodes for company data, financials, news, competitors, scores, and final AI analysis.
+
+### Demo-Only Authentication
+
+The app uses a fixed demo user and JWT sessions. This keeps deployment simple and removes the need for a database while preserving protected routes.
+
+## Trade-Offs
+
+Included:
+
+- AI-assisted investment recommendation
+- Demo authentication
+- Company profile, financial, news, and competitor research
 - Responsive dashboard
-- Card layouts
-- Loading states
-- Error messages
+- PDF export
+- Cloud-deployable backend and frontend
 
----
+Not included:
 
-# 📈 Performance Optimizations
+- User registration
+- Persistent user accounts
+- Watchlists
+- Portfolio tracking
+- Saved search history
+- Real-time streaming prices
+- Database-backed analytics
 
-The application includes several optimizations.
-
-- Modular backend architecture
-- Reusable React components
-- Efficient API requests
-- Loading indicators
-- Error boundaries
-- Clean separation of concerns
-
----
-
-# 🔮 Future Improvements
-
-Given more development time, the following features would be added.
-
-## AI Features
-
-- Multi-agent architecture
-- Retrieval-Augmented Generation (RAG)
-- Historical trend analysis
-- Financial ratio calculator
-- AI confidence scoring
-
----
-
-## User Features
+## Future Improvements
 
 - Portfolio tracker
-- Watchlist
-- Saved analyses
-- Export to PDF
-- Investment comparison
+- Watchlists and saved reports
+- Historical trend analysis
+- Technical indicators
+- Caching for provider responses
+- Queue-based analysis jobs
+- More detailed confidence scoring
+- Side-by-side company comparison
+- Database persistence for production users
 
----
+## AI Usage
 
-## Visualization
+Large language models were used during development for brainstorming, architecture planning, prompt engineering, debugging, UI iteration, deployment troubleshooting, and documentation drafting. All generated output was reviewed and adapted before integration.
 
-- Interactive stock charts
-- Financial dashboards
-- Trend graphs
-- Risk heatmaps
+## Lessons Learned
 
----
-
-## Backend
-
-- Redis caching
-- Queue-based analysis
-- Background workers
-- API response caching
-
----
-
-# 🤖 AI Usage
-
-This project was intentionally developed with the assistance of Large Language Models.
-
-AI was used throughout the development lifecycle for:
-
-- Brainstorming ideas
-- Designing architecture
-- Prompt engineering
-- Debugging
-- API integration
-- UI design improvements
-- Deployment troubleshooting
-- Documentation generation
-
-Every AI-generated solution was manually reviewed, tested, modified, and integrated into the project.
-
----
-
-# 💬 LLM Chat Session
-
-The complete development process involved extensive interaction with ChatGPT.
-
-The conversations included:
-
-- Planning the architecture
-- React development
-- Express backend implementation
-- LangChain integration
-- LangGraph workflow design
-- Gemini prompt engineering
-- Deployment
-- Bug fixing
-- README preparation
-
-The exported conversation logs have been included separately in the submission to demonstrate the complete development process and decision-making approach.
-
----
-
-# 📚 Lessons Learned
-
-This project strengthened my understanding of:
+This project strengthened practical understanding of:
 
 - AI application development
 - Prompt engineering
-- LangChain
-- LangGraph
-- REST API development
-- React architecture
-- Backend integration
-- Authentication
+- LangChain and LangGraph orchestration
+- REST API design
+- React dashboard architecture
+- Provider API integration
+- JWT authentication
 - Cloud deployment
 - Production debugging
 
----
-
-# 🏁 Conclusion
-
-The AI Investment Research Agent successfully demonstrates how modern AI technologies can automate investment research by combining financial data, recent news, and large language models into a single intelligent workflow.
-
-The project showcases practical software engineering practices, clean architecture, modular design, AI orchestration with LangChain and LangGraph, and deployment using modern cloud platforms.
-
-Beyond fulfilling the assignment requirements, the project was designed to be scalable and extensible, making it a solid foundation for future AI-powered financial analysis tools.
-
----
-
-# 🙏 Acknowledgements
-
-Special thanks to:
+## Acknowledgements
 
 - InsideIIM
 - Altuni AI Labs
 - Google Gemini
 - LangChain
 - LangGraph
-- Finnhub
-- React Community
-- Express.js Community
+- React community
+- Express.js community
 
----
+## License
 
-# 📄 License
+This project was created for educational and evaluation purposes as part of the InsideIIM x Altuni AI Labs AI Product Development Engineer Internship Assignment.
 
-This project was created as part of the **InsideIIM × Altuni AI Labs AI Product Development Engineer Internship Assignment**.
+## Author
 
-It is intended for educational and evaluation purposes only.
-
----
-
-# 👨‍💻 Author
-
-**Ayush Pandey**
-
-B.Tech – Computer Science & Engineering
-
+**Ayush Pandey**  
+B.Tech, Computer Science and Engineering  
 Lovely Professional University
-
----
-
-⭐ If you found this project interesting, feel free to give it a star on GitHub!
