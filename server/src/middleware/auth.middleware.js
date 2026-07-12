@@ -1,4 +1,4 @@
-import User from "../models/User.js";
+import { getDemoUser } from "../auth/demoUser.js";
 import { verifyAuthToken } from "../utils/jwt.js";
 
 export const requireAuth = async (req, res, next) => {
@@ -14,12 +14,12 @@ export const requireAuth = async (req, res, next) => {
         }
 
         const payload = verifyAuthToken(token);
-        const user = await User.findById(payload.sub);
+        const user = getDemoUser();
 
-        if (!user) {
+        if (payload.sub !== user.id || payload.email !== user.email) {
             return res.status(401).json({
                 success: false,
-                message: "User no longer exists",
+                message: "Invalid demo session",
             });
         }
 

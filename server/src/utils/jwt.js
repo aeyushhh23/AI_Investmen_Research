@@ -11,7 +11,7 @@ const getJwtSecret = () => {
 export const signAuthToken = (user) => {
     return jwt.sign(
         {
-            sub: user._id.toString(),
+            sub: user.id || user._id?.toString(),
             email: user.email,
         },
         getJwtSecret(),
