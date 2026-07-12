@@ -38,9 +38,10 @@ const ScoreCard = ({ scores }) => {
     <motion.div
       initial={{ opacity: 0, y: 25 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: .5 }}
+      transition={{ duration: .5, ease: [0.16, 1, 0.3, 1] }}
       whileHover={{ y: -6 }}
       className="
+      magnetic-card
       relative
       overflow-hidden
       rounded-[30px]
@@ -70,7 +71,7 @@ const ScoreCard = ({ scores }) => {
 
           <div>
 
-            <h2 className="text-2xl font-black">
+            <h2 className="text-xl font-black sm:text-2xl">
 
               AI Confidence
 
@@ -92,7 +93,7 @@ const ScoreCard = ({ scores }) => {
 
       <div className="mt-10 flex justify-center">
 
-        <div className="relative h-56 w-56">
+        <div className="relative h-48 w-48 sm:h-56 sm:w-56">
 
           <svg viewBox="0 0 224 224" className="absolute inset-0 -rotate-90 w-full h-full">
 
@@ -134,7 +135,7 @@ const ScoreCard = ({ scores }) => {
               animate={{ scale: 1 }}
               className="flex items-baseline gap-1"
             >
-              <h1 className="text-6xl font-black">{score}</h1>
+              <h1 className="text-5xl font-black sm:text-6xl">{score}</h1>
               <p className="text-xl text-slate-400 font-semibold">
                 /100
               </p>
@@ -150,7 +151,7 @@ const ScoreCard = ({ scores }) => {
 
       <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-5">
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-4">
 
           <div className="flex items-center gap-2 text-slate-400">
 
@@ -181,7 +182,7 @@ const ScoreCard = ({ scores }) => {
 
       <div className="mt-5 rounded-2xl border border-white/10 bg-white/5 p-5">
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-4">
 
           <div className="flex items-center gap-2 text-slate-400">
 
@@ -205,7 +206,7 @@ const ScoreCard = ({ scores }) => {
 
       <div className="mt-5 rounded-2xl border border-white/10 bg-white/5 p-5">
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-4">
 
           <div className="flex items-center gap-2 text-slate-400">
 

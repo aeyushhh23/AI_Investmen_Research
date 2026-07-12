@@ -40,9 +40,10 @@ const StockChart = ({ financials, historical }) => {
     <motion.div
       initial={{ opacity: 0, y: 35 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: .6 }}
+      transition={{ duration: .6, ease: [0.16, 1, 0.3, 1] }}
       whileHover={{ y: -5 }}
       className="
+      magnetic-card
       relative
       overflow-hidden
       rounded-[32px]
@@ -61,7 +62,7 @@ const StockChart = ({ financials, historical }) => {
 
       {/* Header */}
 
-      <div className="mb-8 flex items-center justify-between">
+      <div className="mb-8 flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
 
         <div>
 
@@ -75,7 +76,7 @@ const StockChart = ({ financials, historical }) => {
 
             <div>
 
-              <h2 className="text-3xl font-black">
+              <h2 className="text-2xl font-black sm:text-3xl">
 
                 Price Performance
 
@@ -125,11 +126,11 @@ const StockChart = ({ financials, historical }) => {
 
       {/* Price */}
 
-      <div className="mb-8 flex items-center justify-between">
+      <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
 
         <div>
 
-          <h1 className="text-5xl font-black">
+          <h1 className="break-words text-4xl font-black sm:text-5xl">
 
             {formatCurrency(current)}
 
@@ -161,7 +162,7 @@ const StockChart = ({ financials, historical }) => {
 
       {/* Chart */}
 
-      <div className="h-[420px]">
+      <div className="h-[320px] sm:h-[420px]">
 
         {data.length > 0 ? (
 

@@ -57,9 +57,10 @@ const FinancialCard = ({ financials }) => {
     <motion.div
       initial={{ opacity: 0, y: 25 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       whileHover={{ y: -6 }}
       className="
+        magnetic-card
         relative
         overflow-hidden
         rounded-[30px]
@@ -79,9 +80,9 @@ const FinancialCard = ({ financials }) => {
 
       {/* Header */}
 
-      <div className="mb-8 flex items-center justify-between">
+      <div className="mb-8 flex items-start justify-between gap-5">
         <div>
-          <h2 className="text-3xl font-black">
+          <h2 className="text-2xl font-black sm:text-3xl">
             Financial Overview
           </h2>
 
@@ -97,7 +98,7 @@ const FinancialCard = ({ financials }) => {
 
       {/* KPI Grid */}
 
-      <div className="grid grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         {metrics.map((item, index) => (
           <motion.div
             key={item.title}
@@ -131,7 +132,7 @@ const FinancialCard = ({ financials }) => {
               {item.title}
             </p>
 
-            <h3 className={`mt-2 text-2xl font-black ${item.color}`}>
+            <h3 className={`mt-2 break-words text-xl font-black sm:text-2xl ${item.color}`}>
               {item.value}
             </h3>
           </motion.div>

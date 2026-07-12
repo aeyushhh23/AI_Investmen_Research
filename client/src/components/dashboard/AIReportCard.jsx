@@ -3,7 +3,7 @@ import {
   Brain,
   Target,
   ShieldAlert,
-  Sparkles,
+  BarChart3,
   TrendingUp,
 } from "lucide-react";
 
@@ -72,9 +72,10 @@ const AIReportCard = ({ report }) => {
     <motion.div
       initial={{ opacity: 0, y: 35 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: .6 }}
+      transition={{ duration: .6, ease: [0.16, 1, 0.3, 1] }}
       whileHover={{ y: -5 }}
       className="
+      magnetic-card
       relative
       overflow-hidden
       rounded-[32px]
@@ -88,7 +89,7 @@ const AIReportCard = ({ report }) => {
     >
       <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-blue-500/10 blur-[140px]" />
 
-      <div className="flex items-center justify-between mb-10">
+      <div className="mb-10 flex items-start justify-between gap-5">
 
         <div className="flex items-center gap-4">
 
@@ -103,7 +104,7 @@ const AIReportCard = ({ report }) => {
 
           <div>
 
-            <h2 className="text-3xl font-black">
+            <h2 className="text-2xl font-black sm:text-3xl">
 
               AI Investment Thesis
 
@@ -120,7 +121,7 @@ const AIReportCard = ({ report }) => {
 
         </div>
 
-        <Sparkles className="text-cyan-400" size={28} />
+        <BarChart3 className="text-cyan-400" size={28} />
 
       </div>
 

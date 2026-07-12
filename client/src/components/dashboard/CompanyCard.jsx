@@ -7,7 +7,7 @@ import {
   BadgeDollarSign,
   ExternalLink,
   TrendingUp,
-  Sparkles,
+  BarChart3,
 } from "lucide-react";
 
 const CompanyCard = ({ company }) => {
@@ -17,9 +17,10 @@ const CompanyCard = ({ company }) => {
     <motion.div
       initial={{ opacity: 0, y: 25 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       whileHover={{ y: -6 }}
       className="
+      magnetic-card
       relative
       overflow-hidden
       rounded-[30px]
@@ -41,18 +42,21 @@ const CompanyCard = ({ company }) => {
 
       {/* Header */}
 
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-5">
+      <div className="flex items-start justify-between gap-5">
+        <div className="flex min-w-0 items-center gap-5">
           <div
             className="
             flex
-            h-24
-            w-24
+            h-20
+            w-20
+            shrink-0
             items-center
             justify-center
             rounded-3xl
             bg-white
             shadow-xl
+            sm:h-24
+            sm:w-24
             "
           >
             <img
@@ -66,7 +70,7 @@ const CompanyCard = ({ company }) => {
             />
           </div>
 
-          <div>
+          <div className="min-w-0">
             <span
               className="
               inline-flex
@@ -87,7 +91,7 @@ const CompanyCard = ({ company }) => {
               Listed Company
             </span>
 
-            <h2 className="mt-4 text-3xl font-black tracking-tight">
+            <h2 className="mt-4 break-words text-2xl font-black tracking-tight sm:text-3xl">
               {company.companyName}
             </h2>
 
@@ -108,7 +112,7 @@ const CompanyCard = ({ company }) => {
           lg:flex
           "
         >
-          <Sparkles className="text-cyan-400" />
+          <BarChart3 className="text-cyan-400" />
         </div>
       </div>
 

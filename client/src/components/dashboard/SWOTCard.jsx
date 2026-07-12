@@ -15,6 +15,7 @@ const SWOTItem = ({
   <motion.div
     whileHover={{ y: -4 }}
     className="
+    magnetic-card
     rounded-3xl
     border
     border-white/10
@@ -84,8 +85,9 @@ const SWOTCard = ({ report }) => {
     <motion.div
       initial={{ opacity: 0, y: 35 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: .6 }}
+      transition={{ duration: .6, ease: [0.16, 1, 0.3, 1] }}
       className="
+      magnetic-card
       rounded-[32px]
       border
       border-white/10
@@ -97,7 +99,7 @@ const SWOTCard = ({ report }) => {
     >
       <div className="mb-10">
 
-        <h2 className="text-4xl font-black">
+        <h2 className="text-3xl font-black sm:text-4xl">
 
           SWOT Analysis
 

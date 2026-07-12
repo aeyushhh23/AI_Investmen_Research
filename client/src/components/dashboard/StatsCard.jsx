@@ -31,8 +31,9 @@ const StatsCard = ({
         y: -6,
         scale: 1.02,
       }}
-      transition={{ duration: 0.4 }}
+      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
       className="
+      magnetic-card
       relative
       overflow-hidden
       rounded-[28px]
@@ -95,8 +96,9 @@ const StatsCard = ({
       <h2
         className={`
         mt-2
-        text-5xl
+        text-4xl
         font-black
+        sm:text-5xl
         ${color}
         `}
       >

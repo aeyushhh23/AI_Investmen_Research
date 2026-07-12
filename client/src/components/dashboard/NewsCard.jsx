@@ -23,9 +23,10 @@ const NewsCard = ({ article }) => {
         y: -6,
         scale: 1.02,
       }}
-      transition={{ duration: 0.25 }}
+      transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
       className="
       group
+      magnetic-card
       relative
       overflow-hidden
       flex
@@ -47,9 +48,9 @@ const NewsCard = ({ article }) => {
 
       {/* Header */}
 
-      <div className="flex items-center justify-between">
+      <div className="flex items-start justify-between gap-4">
 
-        <div className="flex items-center gap-3">
+        <div className="flex min-w-0 items-center gap-3">
 
           <div className="rounded-2xl bg-blue-500/10 p-3">
 
@@ -60,9 +61,9 @@ const NewsCard = ({ article }) => {
 
           </div>
 
-          <div>
+          <div className="min-w-0">
 
-            <h3 className="font-bold">
+            <h3 className="truncate font-bold">
 
               {article.source || "Market News"}
 
@@ -119,7 +120,7 @@ const NewsCard = ({ article }) => {
 
       {/* Footer */}
 
-      <div className="mt-auto pt-6 flex items-center justify-between">
+      <div className="mt-auto flex items-center justify-between gap-4 pt-6">
 
         <div
           className={`
